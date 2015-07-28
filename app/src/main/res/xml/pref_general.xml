@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditTextPreference
+        android:title="@string/user_real_name"
+        android:key="@string/user_real_name_key"
+        android:inputType="text"
+        android:singleLine="true" />
+
+    <EditTextPreference
+        android:title="@string/user_phone"
+        android:key="@string/user_phone_key"
+        android:inputType="text"
+        android:singleLine="true" />
+
+    <EditTextPreference
+        android:title="@string/user_email"
+        android:key="@string/user_email_key"
+        android:inputType="text"
+        android:singleLine="true" />
+
+    <EditTextPreference
+        android:title="@string/user_facebook"
+        android:key="@string/user_facebook_key"
+        android:inputType="text"
+        android:singleLine="true" />
+
+    <EditTextPreference
+        android:title="@string/user_linkedin"
+        android:key="@string/user_linkedin_key"
+        android:inputType="text"
+        android:singleLine="true" />
+
+</PreferenceScreen>

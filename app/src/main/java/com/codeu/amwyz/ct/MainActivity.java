@@ -1,25 +1,66 @@
 package com.codeu.amwyz.ct;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    // log tag
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Parse Testing
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+        // get the id info
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean idHasBeenGenerated = prefs.getBoolean(getString(R.string.id_generated_key), false);
 
+        // if id hasn't been generated, create one and push to Parse server
+        if(!idHasBeenGenerated){
+            // create an empty parse object
+            final ParseObject newObject = new ParseObject(getString(R.string.test_parse_class_key));
+            // push to parse server
+            newObject.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // Success!
+
+                        // get the object id as the user id
+                        String objectId = newObject.getObjectId();
+                        // get DEFAULT SHARE PREFERENCES
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        // update the preference with new boolean and id
+                        Editor editor = prefs.edit();
+                        editor.putBoolean(getString(R.string.id_generated_key), true);
+                        editor.putString(getString(R.string.user_id_key), objectId);
+                        editor.commit();
+
+                        // log
+                        Log.v(LOG_TAG, "New User ID: " + objectId);
+                    } else {
+                        // Failure log
+                        Log.d(LOG_TAG, "Couldn't initialize new object");
+                    }
+                }
+            });
+        }else{
+            // User Already Have an Info
+            Log.v(LOG_TAG, "Already have ID info");
+        }
     }
 
     @Override
@@ -38,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, com.codeu.amwyz.ct.SettingsActivity.class));
             return true;
         }
 

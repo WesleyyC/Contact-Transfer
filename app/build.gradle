@@ -28,3 +28,6 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }
+dependencies {
+    compile 'com.android.support:support-v4:22.+'
+}
