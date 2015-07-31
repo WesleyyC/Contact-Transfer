@@ -6,6 +6,3 @@ https://docs.google.com/document/d/1kVSDI9YRPA6fDIUUMJJCfEAUMivI9Fpr0ir7c7eZ9Mo/
 
 Trello Board:
 https://trello.com/b/0tDuUtOF/contact-transfer
-
-
-Another difference
