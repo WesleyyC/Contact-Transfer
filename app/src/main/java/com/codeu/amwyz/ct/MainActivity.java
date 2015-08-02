@@ -1,5 +1,7 @@
 package com.codeu.amwyz.ct;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -9,16 +11,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 
-public class MainActivity extends ActionBarActivity {
-
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+    //SectionsPagerAdapter for settings profiles
     // log tag
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    FragmentManager fragmentManager = getFragmentManager();
+    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,19 @@ public class MainActivity extends ActionBarActivity {
             // User Already Have an Info
             Log.v(LOG_TAG, "Already have ID info");
         }
+
+        //creating the buttons by attaching the fragments to the activity
+        //todo: put in a method
+        AddButtonFragment addButtonFragment = new AddButtonFragment();
+        fragmentTransaction.add(R.id.top_main_fragment_container, addButtonFragment);
+
+        ShareButtonFragment shareButtonFragment = new ShareButtonFragment();
+        fragmentTransaction.add(R.id.top_main_fragment_container, shareButtonFragment);
+
+        ContactsButtonFragment contactsButtonFragment = new ContactsButtonFragment();
+        fragmentTransaction.add(R.id.bottom_main_fragment_container, contactsButtonFragment);
+
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -84,5 +104,22 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.add_button:{
+                break;
+            }
+            case R.id.share_button:{
+                break;
+            }
+            case R.id.contacts_button:{
+                Intent contactsIntent = new Intent(this, ContactsActivity.class);
+                startActivity(contactsIntent);
+                break;
+            }
+        }
     }
 }

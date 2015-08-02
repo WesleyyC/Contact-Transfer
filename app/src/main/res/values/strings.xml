@@ -15,26 +15,36 @@
 
     <!-- Setting label-->
     <string name="title_activity_settings"> Setting</string>
+
     <!-- User Real Namer-->
     <string name="user_real_name"> Name </string>
     <string name="user_real_name_key">user_real_name</string>
     <string name="user_real_name_default">Some Very Happy Humanbeing</string>
+
     <!-- User Email-->
     <string name="user_email"> Email </string>
     <string name="user_email_key">user_email</string>
     <string name="user_email_default">Some Very Cute Email Address</string>
+
     <!-- User Phone Number-->
     <string name="user_phone"> Phone Number </string>
     <string name="user_phone_key">user_phone</string>
     <string name="user_phone_default">Some Very Odd Phone Number</string>
+
     <!-- User Facebook-->
     <string name="user_facebook"> Facebook</string>
     <string name="user_facebook_key">user_facebook</string>
     <string name="user_facebook_default">Some Very Interesting Facebook Profile</string>
+
     <!-- User Phone Number-->
     <string name="user_linkedin"> LinkedIn </string>
     <string name="user_linkedin_key">user_linkedin</string>
     <string name="user_linkedin_default">Some Very Professional LinkedIn Profile</string>
+
+    <!-- Button Text-->
+    <string name="add_button_text">Add Contacts</string>
+    <string name="share_button_text">Share Contacts</string>
+    <string name="contacts_button_text">See Contacts</string>
 
     <string name="content_authority">com.codeu.amwyz.ct</string>
 </resources>
