@@ -33,6 +33,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codeu.amwyz.ct.MainActivity" />
         </activity>
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.ContactProvider"
+            android:exported="false"
+            android:syncable="true" />
     </application>
 
 </manifest>

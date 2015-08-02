@@ -45,4 +45,6 @@
     <string name="add_button_text">Add Contacts</string>
     <string name="share_button_text">Share Contacts</string>
     <string name="contacts_button_text">See Contacts</string>
+
+    <string name="content_authority">com.codeu.amwyz.ct</string>
 </resources>
