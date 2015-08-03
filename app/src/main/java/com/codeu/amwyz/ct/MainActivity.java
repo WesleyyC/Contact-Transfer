@@ -27,10 +27,9 @@ public class MainActivity extends ActionBarActivity {
 
         // get the id info
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean idHasBeenGenerated = prefs.getBoolean(getString(R.string.id_generated_key), false);
 
         // if id hasn't been generated, create one and push to Parse server
-        if(!idHasBeenGenerated){
+        if(!prefs.contains(getString(R.string.user_id_key))){
             // create an empty parse object
             final ParseObject newObject = new ParseObject(getString(R.string.test_parse_class_key));
             // push to parse server
@@ -45,7 +44,6 @@ public class MainActivity extends ActionBarActivity {
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         // update the preference with new boolean and id
                         Editor editor = prefs.edit();
-                        editor.putBoolean(getString(R.string.id_generated_key), true);
                         editor.putString(getString(R.string.user_id_key), objectId);
                         editor.commit();
 
