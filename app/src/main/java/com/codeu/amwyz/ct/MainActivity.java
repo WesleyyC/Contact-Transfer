@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -23,6 +23,8 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -34,11 +36,12 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         // get the id info
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean idHasBeenGenerated = prefs.getBoolean(getString(R.string.id_generated_key), false);
 
+        Button button = (Button) findViewById(R.id.button);
         // if id hasn't been generated, create one and push to Parse server
         if(!idHasBeenGenerated){
             // create an empty parse object
@@ -91,6 +94,17 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(this, "Android Beam is supported on your device.",
                     Toast.LENGTH_SHORT).show();
         }
+
+        if (button != null) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    testSendFile(view);
+                }
+            });
+        } else {
+            Toast.makeText(this, "button not set", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -139,19 +153,24 @@ public class MainActivity extends ActionBarActivity {
 
             // File to be transferred
             //for current testing purposes this is just the icon for the app
-            String fileName = "ic_launcher";
-
-            // Retrieve the path to the user's public pictures directory
-            File fileDirectory = Environment
-                    .getExternalStoragePublicDirectory(
-                            Environment.DIRECTORY_PICTURES);
+            String fileName = getResources().getResourceName(R.mipmap.ic_launcher);
 
             // Create a new file using the specified directory and name
-            File fileToTransfer = new File(fileDirectory, fileName);
-            fileToTransfer.setReadable(true, false);
+            try {
+                File fileToTransfer = new File("/sdcard/testFile.txt");
+                fileToTransfer.createNewFile();
+                fileToTransfer.setReadable(true, false);
+                FileOutputStream fOut = new FileOutputStream(fileToTransfer);
+                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+                myOutWriter.append("test");
+                myOutWriter.close();
+                fOut.close();
+                nfcAdapter.setBeamPushUris(
+                        new Uri[]{Uri.fromFile(fileToTransfer)}, this);
+            } catch (Exception e) {
+                Log.e("ERRR", "Could not create file",e);
+            }
 
-            nfcAdapter.setBeamPushUris(
-                    new Uri[]{Uri.fromFile(fileToTransfer)}, this);
         }
     }
 }
