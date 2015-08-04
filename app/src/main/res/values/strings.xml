@@ -45,4 +45,9 @@
     <string name="add_button_text">Add Contacts</string>
     <string name="share_button_text">Share Contacts</string>
     <string name="contacts_button_text">See Contacts</string>
+    <string name="qr_button_text">Use QR Connection</string>
+    <string name="nfc_button_text">Use NFC Connection</string>
+
+    <string name="title_activity_qr">QRActivity</string>
+    <string name="title_activity_nfc">NFCActivity</string>
 </resources>

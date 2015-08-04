@@ -1,5 +1,6 @@
 package com.codeu.amwyz.ct;
 
+
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,8 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 
 /**
  * Created by Youyou on 7/30/2015.
- */
+*/
 public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-
-//    //using an array adapter as a place holder
-//    private ArrayAdapter<String> mContactsAdapter;
 
     private ContactAdapter mContactsAdapter;
     ListView listView;
@@ -35,21 +34,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-//        //Dummy Data
-//        String[] data = {
-//                "Alice - ###-###-####, alice@gmail.com",
-//                "Bob - ###-###-####, bob@gmail.com",
-//                "Carol - ###-###-####, carol@gmail.com"
-//        };
-//        List<String> contactsData = new ArrayList<String>(Arrays.asList(data));
-//
-//        mContactsAdapter = new ArrayAdapter<String>(
-//                getActivity(),
-//                R.layout.list_item_contacts,
-//                R.id.list_item_contacts_textview,
-//                contactsData
-//        );
-//
+
         mContactsAdapter = new ContactAdapter(getActivity(),null,0);
 
 

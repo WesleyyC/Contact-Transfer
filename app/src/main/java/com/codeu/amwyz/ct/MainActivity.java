@@ -1,12 +1,13 @@
 package com.codeu.amwyz.ct;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,12 +22,12 @@ import com.parse.SaveCallback;
 import org.json.JSONArray;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+public class MainActivity extends ActionBarActivity{
     //SectionsPagerAdapter for settings profiles
     // log tag
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    FragmentManager fragmentManager = getFragmentManager();
+    FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     @Override
@@ -75,14 +76,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //creating the buttons by attaching the fragments to the activity
         //todo: put in a method
         AddButtonFragment addButtonFragment = new AddButtonFragment();
-        fragmentTransaction.add(R.id.top_main_fragment_container, addButtonFragment);
+        fragmentTransaction.add(R.id.top_left_main_fragment_container, addButtonFragment);
 
         ShareButtonFragment shareButtonFragment = new ShareButtonFragment();
-        fragmentTransaction.add(R.id.top_main_fragment_container, shareButtonFragment);
+        fragmentTransaction.add(R.id.top_right_main_fragment_container, shareButtonFragment);
 
         ContactsButtonFragment contactsButtonFragment = new ContactsButtonFragment();
         fragmentTransaction.add(R.id.bottom_main_fragment_container, contactsButtonFragment);
-
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
         CTSyncAdapter.initializeSyncAdapter(this);
@@ -111,20 +112,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.add_button:{
+    //This may need to be changed to using an onClickListener for each
+    //button inside the ShareFragment.
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.qr_button:
+                Intent qrIntent = new Intent(this, QRActivity.class);
+                startActivity(qrIntent);
                 break;
-            }
-            case R.id.share_button:{
+            case R.id.nfc_button:
+                Intent nfcIntent = new Intent(this, NFCActivity.class);
+                startActivity(nfcIntent);
                 break;
-            }
-            case R.id.contacts_button:{
-                Intent contactsIntent = new Intent(this, ContactsActivity.class);
-                startActivity(contactsIntent);
-                break;
-            }
         }
     }
 }

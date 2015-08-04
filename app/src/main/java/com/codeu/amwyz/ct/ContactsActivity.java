@@ -2,6 +2,8 @@ package com.codeu.amwyz.ct;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +14,9 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
  * Created by Youyou on 7/30/2015.
  */
 public class ContactsActivity extends ActionBarActivity{
+
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
