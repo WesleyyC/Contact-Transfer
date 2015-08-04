@@ -92,6 +92,8 @@ public class SettingsActivity extends PreferenceActivity
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 public void done(ParseObject user_profile, ParseException e) {
                     if (e == null) {
+                        // Now let's update it with some new data. In this case, only cheatMode and score
+                        // will get sent to the Parse Cloud. playerName hasn't changed.
                         user_profile.put(preference.getKey(), stringValue);
                         user_profile.saveInBackground();
                     }
