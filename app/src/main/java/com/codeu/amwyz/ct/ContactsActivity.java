@@ -16,8 +16,7 @@ public class ContactsActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_main);
 
-        ContactsFragment contactsFragment =  ((ContactsFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.contacts_container));
+        ContactsFragment contactsFragment =  new ContactsFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.contacts_container,contactsFragment).commit();
     }
 
