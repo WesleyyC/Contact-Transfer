@@ -9,19 +9,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
- * Created by Youyou on 8/1/2015.
+ * Created by goodautumn on 8/3/2015.
  */
-public class ShareButtonFragment extends Fragment {
-    @Override
+public class QrEncodeButtonFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.share_button_fragment, container, false);
-        Button shareButton = (Button) view.findViewById(R.id.share_button);
-        shareButton.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.qr_encode_button_fragment, container, false);
+
+        Button qrEncodeButton = (Button) view.findViewById(R.id.qr_encode_button);
+        qrEncodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent shareIntent = new Intent(getActivity(), ShareActivity.class);
-                startActivity(shareIntent);
+                Intent qrEncodeIntent = new Intent(getActivity(), QrEncodeActivity.class);
+                startActivity(qrEncodeIntent);
             }
         });
         return view;

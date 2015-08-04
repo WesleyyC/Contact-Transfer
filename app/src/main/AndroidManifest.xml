@@ -33,6 +33,27 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codeu.amwyz.ct.MainActivity" />
         </activity>
+
+        <activity android:name=".ShareActivity"
+            android:label="Share"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
+        <activity android:name=".QrScanActivity"
+            android:label="QrScan"
+            android:parentActivityName=".ShareActivity" >
+        </activity>
+
+        <activity android:name=".AddActivity"
+            android:label="Add"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+
+        <activity android:name=".QrEncodeActivity"
+            android:label="QrEncode"
+            android:parentActivityName=".AddActivity"
+            ></activity>
+
         <provider
             android:authorities="@string/content_authority"
             android:name=".data.ContactProvider"

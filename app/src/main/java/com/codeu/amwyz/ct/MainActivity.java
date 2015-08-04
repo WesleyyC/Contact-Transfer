@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -110,9 +109,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.add_button:{
+                Intent addIntent = new Intent(this, AddActivity.class);
+                startActivity(addIntent);
                 break;
             }
             case R.id.share_button:{
+                Intent shareIntent = new Intent(this, ShareActivity.class);
+                startActivity(shareIntent);
                 break;
             }
             case R.id.contacts_button:{
