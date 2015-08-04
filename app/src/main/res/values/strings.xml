@@ -16,6 +16,7 @@
 
     <!-- Setting label-->
     <string name="title_activity_settings"> Setting</string>
+    <string name="title_activity_contacts"> Contacts</string>
     <!-- User Real Namer-->
     <string name="user_real_name"> Name </string>
     <string name="user_real_name_key">user_real_name</string>
