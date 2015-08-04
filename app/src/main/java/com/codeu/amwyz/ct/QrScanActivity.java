@@ -56,6 +56,8 @@ public class QrScanActivity extends ActionBarActivity implements ScannerView.Sca
         finish();
 
         //use data to load contact info, save to local database
+        Intent toHomeIntent = new Intent(this, MainActivity.class);
+        startActivity(toHomeIntent);
         return true;
     }
 
