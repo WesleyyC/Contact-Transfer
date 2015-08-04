@@ -6,6 +6,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.codeu.amwyz.ct.data.ContactContract;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import org.json.JSONArray;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,10 +40,22 @@ public class Utility {
         return testValues;
     }
 
-    public static void addContacts(Context context, String parseId){
+    public static void addContacts(final Context context, String parseId){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> contactsSet = prefs.getStringSet(context.getString(R.string.user_contacts_key), new HashSet<String>());
         contactsSet.add(parseId);
-        prefs.edit().putStringSet(context.getString(R.string.user_contacts_key),contactsSet);
+        prefs.edit().putStringSet(context.getString(R.string.user_contacts_key), contactsSet);
+        final Set<String> updateContactSet = new HashSet<>(contactsSet);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
+        String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+
+            public void done(ParseObject user_profile, ParseException e) {
+                if (e == null) {
+                    user_profile.put(context.getString(R.string.user_contacts_key), new JSONArray(updateContactSet));
+                    user_profile.saveInBackground();
+                }
+            }
+        });
     }
 }

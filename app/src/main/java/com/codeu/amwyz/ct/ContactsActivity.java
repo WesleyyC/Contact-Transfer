@@ -36,6 +36,7 @@ public class ContactsActivity extends ActionBarActivity{
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }else if(id==R.id.action_refresh){
+            Utility.addContacts(getApplicationContext(),"nHO2xrtXQI");
             CTSyncAdapter.syncImmediately(getApplicationContext());
             return true;
         }
