@@ -1,7 +1,7 @@
 package com.codeu.amwyz.ct;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Youyou on 7/30/2015.
  */
-public class ContactsFragment extends Fragment{
+public class ContactsFragment extends Fragment {
 
     //using an array adapter as a place holder
     private ArrayAdapter<String> mContactsAdapter;

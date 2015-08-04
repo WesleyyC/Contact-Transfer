@@ -1,30 +1,17 @@
 package com.codeu.amwyz.ct;
 
-
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-/**
- * Created by Youyou on 7/30/2015.
- */
-public class ContactsActivity extends ActionBarActivity{
-
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+public class NFCActivity extends ActionBarActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contacts_main);
-
-        ContactsFragment contactsFragment = new ContactsFragment();
-        fragmentTransaction.add(R.id.contacts_container, contactsFragment);
-        fragmentTransaction.commit();
+        setContentView(R.layout.nfc_main);
     }
 
     @Override
