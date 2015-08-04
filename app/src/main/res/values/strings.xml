@@ -5,6 +5,7 @@
     <!-- Default-->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
 
     <!-- Flag for creating user profile-->
     <string name="id_generated_key">id_generated</string>

@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.codeu.amwyz.ct.sync.CTSyncAdapter;
+
 /**
  * Created by Youyou on 7/30/2015.
  */
@@ -32,6 +34,9 @@ public class ContactsActivity extends ActionBarActivity{
 
         if(id == R.id.action_settings){
             startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }else if(id==R.id.action_refresh){
+            CTSyncAdapter.syncImmediately(getApplicationContext());
             return true;
         }
 

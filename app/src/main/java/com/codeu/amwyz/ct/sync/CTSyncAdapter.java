@@ -18,7 +18,6 @@ import android.util.Log;
 import com.codeu.amwyz.ct.R;
 import com.codeu.amwyz.ct.Utility;
 import com.codeu.amwyz.ct.data.ContactContract;
-import com.codeu.amwyz.ct.data.ContactProvider;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -52,14 +51,13 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
+                    getContext().getContentResolver().delete(ContactContract.ContactEntry.CONTENT_URI,null,null);
                     for(ParseObject object:objects){
                         ContentValues newValue = Utility.createContactValues(object.getString("objectId"),object.getString(getContext().getString(R.string.user_real_name_key)),
                                 object.getString(getContext().getString(R.string.user_phone_key)),object.getString(getContext().getString(R.string.user_email_key)),
                                 object.getString(getContext().getString(R.string.user_facebook_key)),object.getString(getContext().getString(R.string.user_linkedin_key)));
-                        int update = getContext().getContentResolver().update(ContactContract.ContactEntry.CONTENT_URI, newValue, ContactProvider.sParseIDSelection, new String[]{object.getString("objectId")});
-                        if (update<=0){
-                            getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
-                        }
+                        getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
+
                     }
                 } else {
                     Log.d(LOG_TAG,"Parse fetching fail:" + e.toString());

@@ -1,6 +1,9 @@
 package com.codeu.amwyz.ct;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.codeu.amwyz.ct.data.ContactContract;
 
@@ -29,5 +32,12 @@ public class Utility {
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_FACEBOOK,user_facebook);
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_LINKEDIN,user_linkedin);
         return testValues;
+    }
+
+    public static void addContacts(Context context, String parseId){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> contactsSet = prefs.getStringSet(context.getString(R.string.user_contacts_key), new HashSet<String>());
+        contactsSet.add(parseId);
+        prefs.edit().putStringSet(context.getString(R.string.user_contacts_key),contactsSet);
     }
 }
