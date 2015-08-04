@@ -22,6 +22,11 @@ public class ContactProvider extends ContentProvider {
             ContactContract.ContactEntry.TABLE_NAME+
                     "." + ContactContract.ContactEntry._ID + " = ? ";
 
+    //contact.contact_id = ?
+    public static final String sParseIDSelection =
+            ContactContract.ContactEntry.TABLE_NAME+
+                    "." + ContactContract.ContactEntry.COLUMN_USER_PARSE_ID + " = ? ";
+
     // get contact table row by id
     private Cursor getContactByID(Uri uri, String[] projection, String sortOrder) {
         String contact_id = ContactContract.ContactEntry.getIDFromURI(uri);
