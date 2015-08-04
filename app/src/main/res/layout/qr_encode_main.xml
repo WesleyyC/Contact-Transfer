@@ -3,24 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:id="@+id/main_fragment_container">
+    tools:context=".QrEncodeActivity"
+    android:id="@+id/qr_encode_fragment_container">
 
     <LinearLayout
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_width="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:id="@+id/top_main_fragment_container">
-<Button
-        android:id="@+id/button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Send File"
-        android:onClick="sendFile" />
+        android:id="@+id/top_qr_encode_fragment_container">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/qr_code"
+            android:layout_gravity="center" />
 
     </LinearLayout>
 
@@ -31,7 +29,7 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:id="@+id/bottom_main_fragment_container">
+        android:id="@+id/bottom_qr_encode_fragment_container">
 
     </LinearLayout>
 

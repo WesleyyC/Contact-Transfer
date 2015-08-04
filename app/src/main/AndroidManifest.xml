@@ -28,9 +28,14 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ContactsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -40,6 +45,32 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codeu.amwyz.ct.MainActivity" />
         </activity>
+
+        <activity android:name=".ShareActivity"
+            android:label="Share"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
+        <activity android:name=".QrScanActivity"
+            android:label="QrScan"
+            android:parentActivityName=".ShareActivity" >
+        </activity>
+
+        <activity android:name=".AddActivity"
+            android:label="Add"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+
+        <activity android:name=".QrEncodeActivity"
+            android:label="QrEncode"
+            android:parentActivityName=".AddActivity"
+            ></activity>
+
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.ContactProvider"
+            android:exported="false"
+            android:syncable="true" />
     </application>
 
 </manifest>

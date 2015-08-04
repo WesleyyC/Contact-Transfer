@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:id="@+id/main_fragment_container">
+    tools:context=".ShareActivity"
+    android:id="@+id/share_main_fragment_container">
 
     <LinearLayout
         android:layout_height="0dp"
@@ -13,14 +13,7 @@
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:id="@+id/top_main_fragment_container">
-<Button
-        android:id="@+id/button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Send File"
-        android:onClick="sendFile" />
+        android:id="@+id/top_share_fragment_container">
 
     </LinearLayout>
 
@@ -31,7 +24,7 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:id="@+id/bottom_main_fragment_container">
+        android:id="@+id/bottom_share_fragment_container">
 
     </LinearLayout>
 
