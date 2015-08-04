@@ -92,7 +92,6 @@ public class SettingsActivity extends PreferenceActivity
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 public void done(ParseObject user_profile, ParseException e) {
                     if (e == null) {
-
                         user_profile.put(preference.getKey(), stringValue);
                         user_profile.saveInBackground();
                     }

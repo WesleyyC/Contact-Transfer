@@ -14,6 +14,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -32,12 +34,14 @@ public class MainActivity extends ActionBarActivity {
         if(!prefs.contains(getString(R.string.user_id_key))){
             // create an empty parse object
             final ParseObject newObject = new ParseObject(getString(R.string.test_parse_class_key));
+            // enter test contact list
+            JSONArray mJSONArray = new JSONArray(Utility.TEST_CONTACT_LIST);
+            newObject.put(getString(R.string.user_contacts_key), mJSONArray);
             // push to parse server
             newObject.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Success!
-
                         // get the object id as the user id
                         String objectId = newObject.getObjectId();
                         // get DEFAULT SHARE PREFERENCES
@@ -45,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
                         // update the preference with new boolean and id
                         Editor editor = prefs.edit();
                         editor.putString(getString(R.string.user_id_key), objectId);
+                        editor.putStringSet(getString(R.string.user_contacts_key),Utility.TEST_CONTACT_SET);
                         editor.commit();
 
                         // log

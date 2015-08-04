@@ -35,7 +35,8 @@
     <string name="user_linkedin"> LinkedIn </string>
     <string name="user_linkedin_key">user_linkedin</string>
     <string name="user_linkedin_default">Some Very Professional LinkedIn Profile</string>
-
+    <!-- User Contact List-->
+    <string name="user_contacts_key">user_contacts</string>
     <!-- SyncAdapter related -->
     <string name="sync_account_type">sunshine.example.com</string>
     <string name="content_authority">com.codeu.amwyz.ct</string>
