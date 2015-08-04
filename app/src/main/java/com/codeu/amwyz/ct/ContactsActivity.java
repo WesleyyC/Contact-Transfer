@@ -1,7 +1,5 @@
 package com.codeu.amwyz.ct;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -13,17 +11,14 @@ import android.view.MenuItem;
  */
 public class ContactsActivity extends ActionBarActivity{
 
-    FragmentManager fragmentManager = getFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_main);
 
-        ContactsFragment contactsFragment = new ContactsFragment();
-        fragmentTransaction.add(R.id.contacts_container, contactsFragment);
-        fragmentTransaction.commit();
+        ContactsFragment contactsFragment =  ((ContactsFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.contacts_container));
+        getSupportFragmentManager().beginTransaction().add(R.id.contacts_container,contactsFragment).commit();
     }
 
     @Override

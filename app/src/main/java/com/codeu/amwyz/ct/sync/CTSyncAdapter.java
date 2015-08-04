@@ -34,27 +34,8 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
     // 60 seconds (1 minute) * 60 = 1 hours
     public static final int SYNC_INTERVAL = 60 * 60;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
-    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-    private static final int WEATHER_NOTIFICATION_ID = 3004;
 
 
-    private static final String[] NOTIFY_WEATHER_PROJECTION = new String[] {
-            ContactContract.ContactEntry.COLUMN_USER_PARSE_ID,
-            ContactContract.ContactEntry.COLUMN_USER_REAL_NAME,
-            ContactContract.ContactEntry.COLUMN_USER_PHONE,
-            ContactContract.ContactEntry.COLUMN_USER_LINKEDIN,
-            ContactContract.ContactEntry.COLUMN_USER_FACEBOOK,
-            ContactContract.ContactEntry.COLUMN_USER_EMAIL,
-
-    };
-
-    // these indices must match the projection
-    private static final int COLUMN_USER_PARSE_ID = 0;
-    private static final int COLUMN_USER_REAL_NAME = 1;
-    private static final int COLUMN_USER_PHONE = 2;
-    private static final int COLUMN_USER_LINKEDIN = 3;
-    private static final int COLUMN_USER_FACEBOOK = 4;
-    private static final int COLUMN_USER_EMAIL = 5;
 
     public CTSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -69,22 +50,22 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(getContext().getString(R.string.test_parse_class_key));
         query = query.whereContainedIn("objectId",contactsSet);
         query.findInBackground(new FindCallback<ParseObject>() {
-           public void done(List<ParseObject> objects, ParseException e) {
-               if (e == null) {
-                   for(ParseObject object:objects){
-                       ContentValues newValue = Utility.createContactValues(object.getString("objectId"),object.getString(getContext().getString(R.string.user_real_name_key)),
-                               object.getString(getContext().getString(R.string.user_phone_key)),object.getString(getContext().getString(R.string.user_email_key)),
-                               object.getString(getContext().getString(R.string.user_facebook_key)),object.getString(getContext().getString(R.string.user_linkedin_key)));
-                       int update = getContext().getContentResolver().update(ContactContract.ContactEntry.CONTENT_URI, newValue, ContactProvider.sParseIDSelection, new String[]{object.getString("objectId")});
-                       if (update<=0){
-                           getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
-                       }
-                   }
-               } else {
-                   Log.d(LOG_TAG,"Parse fetching fail:" + e.toString());
-               }
-           }
-       });
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    for(ParseObject object:objects){
+                        ContentValues newValue = Utility.createContactValues(object.getString("objectId"),object.getString(getContext().getString(R.string.user_real_name_key)),
+                                object.getString(getContext().getString(R.string.user_phone_key)),object.getString(getContext().getString(R.string.user_email_key)),
+                                object.getString(getContext().getString(R.string.user_facebook_key)),object.getString(getContext().getString(R.string.user_linkedin_key)));
+                        int update = getContext().getContentResolver().update(ContactContract.ContactEntry.CONTENT_URI, newValue, ContactProvider.sParseIDSelection, new String[]{object.getString("objectId")});
+                        if (update<=0){
+                            getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
+                        }
+                    }
+                } else {
+                    Log.d(LOG_TAG,"Parse fetching fail:" + e.toString());
+                }
+            }
+        });
     }
 
 

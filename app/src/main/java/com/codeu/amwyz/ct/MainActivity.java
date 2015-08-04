@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
@@ -83,6 +84,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         fragmentTransaction.add(R.id.bottom_main_fragment_container, contactsButtonFragment);
 
         fragmentTransaction.commit();
+
+        CTSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
