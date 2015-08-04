@@ -22,7 +22,7 @@ import org.json.JSONArray;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
-    //SectionsPagerAdapter for settings profiles
+
     // log tag
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // get the id info
+        // get the pref
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         // if id hasn't been generated, create one and push to Parse server

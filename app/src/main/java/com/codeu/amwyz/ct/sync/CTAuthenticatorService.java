@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 /**
- * The service which allows the sync adapter framework to access the authenticator.
+ * direct copy from developer guide
  */
 public class CTAuthenticatorService extends Service {
     // Instance field that stores the authenticator object

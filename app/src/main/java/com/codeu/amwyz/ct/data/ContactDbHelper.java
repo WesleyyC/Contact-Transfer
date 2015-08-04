@@ -11,7 +11,7 @@ import com.codeu.amwyz.ct.data.ContactContract.ContactEntry;
  */
 public class ContactDbHelper extends SQLiteOpenHelper {
 
-    // If you change the database schema, you must increment the database version.
+    // Increment the database version if schema changes
     private static final int DATABASE_VERSION = 1;
 
     static final String DATABASE_NAME = "contact.db";

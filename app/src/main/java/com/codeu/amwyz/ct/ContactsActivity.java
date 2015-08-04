@@ -18,6 +18,8 @@ public class ContactsActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_main);
 
+        // go to the Contact Fragment
+        // Fragment class is v4
         ContactsFragment contactsFragment =  new ContactsFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.contacts_container,contactsFragment).commit();
     }
@@ -36,7 +38,7 @@ public class ContactsActivity extends ActionBarActivity{
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }else if(id==R.id.action_refresh){
-            Utility.addContacts(getApplicationContext(),"nHO2xrtXQI");
+            // every time we refresh, we perform a sync
             CTSyncAdapter.syncImmediately(getApplicationContext());
             return true;
         }

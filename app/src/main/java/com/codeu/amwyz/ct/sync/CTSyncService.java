@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * direct copy from developer guide
+ */
 public class CTSyncService extends Service {
     private static final Object sSyncAdapterLock = new Object();
     private static CTSyncAdapter sCTSyncAdapter = null;

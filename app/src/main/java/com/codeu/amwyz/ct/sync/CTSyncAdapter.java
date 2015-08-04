@@ -43,21 +43,27 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "Starting sync");
-        // get the id info
+        // get the default preference list
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        // get the contact list
         Set<String> contactsSet = prefs.getStringSet(getContext().getString(R.string.user_contacts_key), new HashSet<String>());
+        // get the query
         ParseQuery<ParseObject> query = ParseQuery.getQuery(getContext().getString(R.string.test_parse_class_key));
+        // only selec friends
         query = query.whereContainedIn("objectId",contactsSet);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
+                    // before inserting, drop the whole table
                     getContext().getContentResolver().delete(ContactContract.ContactEntry.CONTENT_URI,null,null);
+                    // insert each ParseObject
                     for(ParseObject object:objects){
+                        // Create content value with the following method in Utility
                         ContentValues newValue = Utility.createContactValues(object.getString("objectId"),object.getString(getContext().getString(R.string.user_real_name_key)),
                                 object.getString(getContext().getString(R.string.user_phone_key)),object.getString(getContext().getString(R.string.user_email_key)),
                                 object.getString(getContext().getString(R.string.user_facebook_key)),object.getString(getContext().getString(R.string.user_linkedin_key)));
+                        // Insert
                         getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
-
                     }
                 } else {
                     Log.d(LOG_TAG,"Parse fetching fail:" + e.toString());
@@ -125,12 +131,7 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
             if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
                 return null;
             }
-            /*
-             * If you don't set android:syncable="true" in
-             * in your <provider> element in the manifest,
-             * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
-             * here.
-             */
+
 
             onAccountCreated(newAccount, context);
         }
@@ -138,19 +139,11 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private static void onAccountCreated(Account newAccount, Context context) {
-        /*
-         * Since we've created an account
-         */
+
         CTSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
-        /*
-         * Without calling setSyncAutomatically, our periodic sync will not be enabled.
-         */
         ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
 
-        /*
-         * Finally, let's do a sync to get things started
-         */
         syncImmediately(context);
     }
 

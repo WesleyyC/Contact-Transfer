@@ -28,6 +28,7 @@ public class Utility {
     public static final List<String> TEST_CONTACT_LIST= Arrays.asList(TEST_CONTACT_ARRAY);
     public static final Set<String> TEST_CONTACT_SET = new HashSet<>(TEST_CONTACT_LIST);
 
+    // build up a content value for database using the following parameter
     public static ContentValues createContactValues(String user_parse_id, String user_real_name, String user_phone, String user_email, String user_facebook, String user_linkedin) {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
@@ -40,6 +41,8 @@ public class Utility {
         return testValues;
     }
 
+    // add a contact to the user's contact list locally, which will then update with the ParseServer
+    // just give context and contact's ParseId
     public static void addContacts(final Context context, String parseId){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> contactsSet = prefs.getStringSet(context.getString(R.string.user_contacts_key), new HashSet<String>());
