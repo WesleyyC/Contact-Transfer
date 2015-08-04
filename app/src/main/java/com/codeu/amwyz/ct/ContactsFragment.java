@@ -1,5 +1,6 @@
 package com.codeu.amwyz.ct;
 
+
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 
 /**
  * Created by Youyou on 7/30/2015.
+<<<<<<< HEAD
  */
 // Implmented with a Loader and cursor adapter
 public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -36,6 +39,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         // create a cursor adapter
+
         mContactsAdapter = new ContactAdapter(getActivity(),null,0);
         // inflate the fragment
         View rootView = inflater.inflate(R.layout.contacts_fragment, container, false);
