@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
-import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.Button;
 
 import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 import com.parse.ParseException;
@@ -32,7 +30,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     // log tag
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    FragmentManager fragmentManager = getFragmentManager();
+    FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     @Override
@@ -125,8 +123,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Intent qrIntent = new Intent(this, QRActivity.class);
                 startActivity(qrIntent);
                 break;
-            }
-	case R.id.nfc_button:
+	        case R.id.nfc_button:
                 Intent nfcIntent = new Intent(this, NFCActivity.class);
                 startActivity(nfcIntent);
                 break;
