@@ -6,34 +6,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     //SectionsPagerAdapter for settings profiles
     // log tag
     private final String LOG_TAG = MainActivity.class.getSimpleName();
-    private NfcAdapter nfcAdapter;
+
 
     FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -45,8 +38,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         // get the id info
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean idHasBeenGenerated = prefs.getBoolean(getString(R.string.id_generated_key), false);
-
-        Button button = (Button) findViewById(R.id.button);
+        checkNFCCapabilities();
         // if id hasn't been generated, create one and push to Parse server
         if(!idHasBeenGenerated){
             // create an empty parse object
@@ -88,37 +80,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ShareButtonFragment shareButtonFragment = new ShareButtonFragment();
         fragmentTransaction.add(R.id.top_main_fragment_container, shareButtonFragment);
         //check to see if device is capable of using NFC
-        PackageManager pm = this.getPackageManager();
-        if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
-            // NFC is not available on the device.
-            Toast.makeText(this, "The device does not has NFC hardware.",
-                    Toast.LENGTH_SHORT).show();
-        }
-        // Check whether device is running Android 4.1 or higher
-        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            // Android Beam feature is not supported.
-            Toast.makeText(this, "Android Beam is not supported.",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else {
-            // NFC and Android Beam file transfer is supported.
-            Toast.makeText(this, "Android Beam is supported on your device.",
-                    Toast.LENGTH_SHORT).show();
-        }
 
-        if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    testSendFile(view);
-                }
-            });
-        } else {
-            Toast.makeText(this, "button not set", Toast.LENGTH_SHORT).show();
-        }
+//        Button button = (Button) findViewById(R.id.button);
+//        if (button != null) {
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    testSendFile(view);
+//                }
+//            });
+//        } else {
+//            Toast.makeText(this, "button not set", Toast.LENGTH_SHORT).show();
+//        }
+
+
         ContactsButtonFragment contactsButtonFragment = new ContactsButtonFragment();
         fragmentTransaction.add(R.id.bottom_main_fragment_container, contactsButtonFragment);
-
         fragmentTransaction.commit();
     }
 
@@ -166,47 +143,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
-    public void testSendFile(View view) {
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        // Check whether NFC is enabled on device
-        if(!nfcAdapter.isEnabled()){
-            // NFC is disabled, show the settings UI
-            // to enable NFC
-            Toast.makeText(this, "Please enable NFC.",
+
+    public void checkNFCCapabilities() {
+        PackageManager pm = this.getPackageManager();
+        if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
+            // NFC is not available on the device.
+            Toast.makeText(this, "The device does not has NFC hardware.",
                     Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
         }
-        // Check whether Android Beam feature is enabled on device
-        else if (!nfcAdapter.isNdefPushEnabled()) {
-            // Android Beam is disabled, show the settings UI
-            // to enable Android Beam
-            Toast.makeText(this, "Please enable Android Beam.",
+        // Check whether device is running Android 4.1 or higher
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            // Android Beam feature is not supported.
+            Toast.makeText(this, "Android Beam is not supported.",
                     Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(Settings.ACTION_NFCSHARING_SETTINGS));
-        } else {
-            // NFC and Android Beam both are enabled
-
-            // File to be transferred
-            //for current testing purposes this is just the icon for the app
-            String fileName = getResources().getResourceName(R.mipmap.ic_launcher);
-
-            // Create a new file using the specified directory and name
-            try {
-                File fileToTransfer = new File("/sdcard/testFile.txt");
-                fileToTransfer.createNewFile();
-                fileToTransfer.setReadable(true, false);
-                FileOutputStream fOut = new FileOutputStream(fileToTransfer);
-                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-                myOutWriter.append("test");
-                myOutWriter.close();
-                fOut.close();
-                nfcAdapter.setBeamPushUris(
-                        new Uri[]{Uri.fromFile(fileToTransfer)}, this);
-            } catch (Exception e) {
-                Log.e("ERRR", "Could not create file",e);
-            }
-
+        }
+        else {
+            // NFC and Android Beam file transfer is supported.
+            Toast.makeText(this, "Android Beam is supported on your device.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

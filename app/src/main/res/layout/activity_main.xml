@@ -14,13 +14,7 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:id="@+id/top_main_fragment_container">
-<Button
-        android:id="@+id/button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Send File"
-        android:onClick="sendFile" />
+
 
     </LinearLayout>
 

@@ -23,7 +23,9 @@ public class ShareActivity extends ActionBarActivity {
 
 
         QrScanButtonFragment qrScanButtonFragment = new QrScanButtonFragment();
+        NFCButtonFragment nfcButtonFragment = new NFCButtonFragment();
         fragmentTransaction.add(R.id.bottom_share_fragment_container, qrScanButtonFragment);
+        fragmentTransaction.add(R.id.top_share_fragment_container, nfcButtonFragment);
         fragmentTransaction.commit();
     }
 
