@@ -5,6 +5,7 @@
     <!-- Default-->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
 
     <!-- Flag for creating user profile-->
     <string name="id_generated_key">id_generated</string>
@@ -15,36 +16,39 @@
 
     <!-- Setting label-->
     <string name="title_activity_settings"> Setting</string>
-
+    <string name="title_activity_contacts"> Contacts</string>
     <!-- User Real Namer-->
     <string name="user_real_name"> Name </string>
     <string name="user_real_name_key">user_real_name</string>
     <string name="user_real_name_default">Some Very Happy Humanbeing</string>
-
     <!-- User Email-->
     <string name="user_email"> Email </string>
     <string name="user_email_key">user_email</string>
     <string name="user_email_default">Some Very Cute Email Address</string>
-
     <!-- User Phone Number-->
     <string name="user_phone"> Phone Number </string>
     <string name="user_phone_key">user_phone</string>
     <string name="user_phone_default">Some Very Odd Phone Number</string>
-
     <!-- User Facebook-->
     <string name="user_facebook"> Facebook</string>
     <string name="user_facebook_key">user_facebook</string>
     <string name="user_facebook_default">Some Very Interesting Facebook Profile</string>
-
     <!-- User Phone Number-->
     <string name="user_linkedin"> LinkedIn </string>
     <string name="user_linkedin_key">user_linkedin</string>
     <string name="user_linkedin_default">Some Very Professional LinkedIn Profile</string>
-
+    <!-- User Contact List-->
+    <string name="user_contacts_key">user_contacts</string>
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">sunshine.example.com</string>
+    <string name="content_authority">com.codeu.amwyz.ct</string>
     <!-- Button Text-->
     <string name="add_button_text">Add Contacts</string>
     <string name="share_button_text">Share Contacts</string>
     <string name="contacts_button_text">See Contacts</string>
+    <string name="qr_button_text">Use QR Connection</string>
+    <string name="nfc_button_text">Use NFC Connection</string>
 
-    <string name="content_authority">com.codeu.amwyz.ct</string>
+    <string name="title_activity_qr">QRActivity</string>
+    <string name="title_activity_nfc">NFCActivity</string>
 </resources>

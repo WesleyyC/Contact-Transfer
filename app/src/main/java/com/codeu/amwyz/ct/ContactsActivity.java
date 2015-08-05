@@ -1,19 +1,21 @@
 package com.codeu.amwyz.ct;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 
 /**
  * Created by Youyou on 7/30/2015.
  */
 public class ContactsActivity extends ActionBarActivity{
 
-    FragmentManager fragmentManager = getFragmentManager();
+    FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     @Override
@@ -21,9 +23,10 @@ public class ContactsActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_main);
 
-        ContactsFragment contactsFragment = new ContactsFragment();
-        fragmentTransaction.add(R.id.contacts_container, contactsFragment);
-        fragmentTransaction.commit();
+        // go to the Contact Fragment
+        // Fragment class is v4
+        ContactsFragment contactsFragment =  new ContactsFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.contacts_container,contactsFragment).commit();
     }
 
     @Override
@@ -38,6 +41,10 @@ public class ContactsActivity extends ActionBarActivity{
 
         if(id == R.id.action_settings){
             startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }else if(id==R.id.action_refresh){
+            // every time we refresh, we perform a sync
+            CTSyncAdapter.syncImmediately(getApplicationContext());
             return true;
         }
 

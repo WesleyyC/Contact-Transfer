@@ -1,7 +1,6 @@
 package com.codeu.amwyz.ct;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -10,23 +9,28 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.Button;
 
+import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+
+
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
-    //SectionsPagerAdapter for settings profiles
     // log tag
     private final String LOG_TAG = MainActivity.class.getSimpleName();
-
 
     FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -35,28 +39,31 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // get the id info
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean idHasBeenGenerated = prefs.getBoolean(getString(R.string.id_generated_key), false);
         checkNFCCapabilities();
         // if id hasn't been generated, create one and push to Parse server
-        if(!idHasBeenGenerated){
+        if(!prefs.contains(getString(R.string.user_id_key))){
             // create an empty parse object
             final ParseObject newObject = new ParseObject(getString(R.string.test_parse_class_key));
+            // enter test contact list
+            JSONArray mJSONArray = new JSONArray(Utility.TEST_CONTACT_LIST);
+            newObject.put(getString(R.string.user_contacts_key), mJSONArray);
             // push to parse server
             newObject.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Success!
-
                         // get the object id as the user id
                         String objectId = newObject.getObjectId();
                         // get DEFAULT SHARE PREFERENCES
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         // update the preference with new boolean and id
                         Editor editor = prefs.edit();
-                        editor.putBoolean(getString(R.string.id_generated_key), true);
                         editor.putString(getString(R.string.user_id_key), objectId);
+                        editor.putStringSet(getString(R.string.user_contacts_key), Utility.TEST_CONTACT_SET);
                         editor.commit();
 
                         // log
@@ -75,28 +82,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //creating the buttons by attaching the fragments to the activity
         //todo: put in a method
         AddButtonFragment addButtonFragment = new AddButtonFragment();
-        fragmentTransaction.add(R.id.top_main_fragment_container, addButtonFragment);
+        fragmentTransaction.add(R.id.top_left_main_fragment_container, addButtonFragment);
 
         ShareButtonFragment shareButtonFragment = new ShareButtonFragment();
-        fragmentTransaction.add(R.id.top_main_fragment_container, shareButtonFragment);
-        //check to see if device is capable of using NFC
-
-//        Button button = (Button) findViewById(R.id.button);
-//        if (button != null) {
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    testSendFile(view);
-//                }
-//            });
-//        } else {
-//            Toast.makeText(this, "button not set", Toast.LENGTH_SHORT).show();
-//        }
-
+        fragmentTransaction.add(R.id.top_right_main_fragment_container, shareButtonFragment);
 
         ContactsButtonFragment contactsButtonFragment = new ContactsButtonFragment();
         fragmentTransaction.add(R.id.bottom_main_fragment_container, contactsButtonFragment);
         fragmentTransaction.commit();
+
+        CTSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
@@ -122,17 +117,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.add_button:{
-                Intent addIntent = new Intent(this, AddActivity.class);
-                startActivity(addIntent);
+    //This may need to be changed to using an onClickListener for each
+    //button inside the ShareFragment.
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.qr_button:
+                Intent qrIntent = new Intent(this, QRActivity.class);
+                startActivity(qrIntent);
                 break;
             }
+	case R.id.nfc_button:
+                Intent nfcIntent = new Intent(this, NFCActivity.class);
+                startActivity(nfcIntent);
+                break;
             case R.id.share_button:{
-                Intent shareIntent = new Intent(this, ShareActivity.class);
-                startActivity(shareIntent);
                 break;
             }
             case R.id.contacts_button:{

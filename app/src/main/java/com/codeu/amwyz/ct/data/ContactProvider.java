@@ -17,18 +17,24 @@ public class ContactProvider extends ContentProvider {
     static final int CONTACT = 100;
     static final int CONTACT_WITH_ID = 101;
 
-    //contact.contact_id = ?
+    //contact.parse_id = ?
     private static final String sContactIDSelection =
             ContactContract.ContactEntry.TABLE_NAME+
                     "." + ContactContract.ContactEntry._ID + " = ? ";
 
+    //contact.contact_id = ?
+    public static final String sParseIDSelection =
+            ContactContract.ContactEntry.TABLE_NAME+
+                    "." + ContactContract.ContactEntry.COLUMN_USER_PARSE_ID + " = ? ";
+
     // get contact table row by id
     private Cursor getContactByID(Uri uri, String[] projection, String sortOrder) {
+        // build URI
         String contact_id = ContactContract.ContactEntry.getIDFromURI(uri);
-
+        // Build Selection
         String[] selectionArgs = new String[]{contact_id};
         String selection = sContactIDSelection;
-
+        // get the cursor
         return mOpenHelper.getReadableDatabase().query(
                 ContactContract.ContactEntry.TABLE_NAME,
                 projection,
@@ -40,11 +46,14 @@ public class ContactProvider extends ContentProvider {
         );
     }
 
+    // build up the UriMatcher
     static UriMatcher buildUriMatcher() {
+        // Path
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = ContactContract.CONTENT_AUTHORITY;
-
+        // /contact
         matcher.addURI(authority, ContactContract.PATH_CONTACT, CONTACT);
+        // /contact/id
         matcher.addURI(authority, ContactContract.PATH_CONTACT+ "/#", CONTACT_WITH_ID);
 
         return matcher;
@@ -76,8 +85,6 @@ public class ContactProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        // Here's the switch statement that, given a URI, will determine what kind of request it is,
-        // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
             // "contact/#"
@@ -197,8 +204,6 @@ public class ContactProvider extends ContentProvider {
         }
     }
 
-    // You do not need to call this method. This is a method specifically to assist the testing
-    // framework in running smoothly.
     @Override
     @TargetApi(11)
     public void shutdown() {

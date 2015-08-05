@@ -1,23 +1,8 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package com.codeu.amwyz.ct;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -27,14 +12,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-/**
- * A {@link PreferenceActivity} that presents a set of application settings.
- * <p>
- * See <a href="http://developer.android.com/design/patterns/settings.html">
- * Android Design: Settings</a> for design guidelines and the <a
- * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
- * API Guide</a> for more information on developing a Settings UI.
- */
+
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
@@ -72,37 +50,24 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public boolean onPreferenceChange(final Preference preference, Object value) {
+        // get the updated value
         final String stringValue = value.toString();
+        // get objectID
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String objectId = prefs.getString(getString(R.string.user_id_key), "");
+        // Retrieve the object by id and update
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(getString(R.string.test_parse_class_key));
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            public void done(ParseObject user_profile, ParseException e) {
+                if (e == null) {
 
-        if (preference instanceof ListPreference) {
-            // For list preferences, look up the correct display value in
-            // the preference's 'entries' list (since they have separate labels/values).
-            ListPreference listPreference = (ListPreference) preference;
-            int prefIndex = listPreference.findIndexOfValue(stringValue);
-            if (prefIndex >= 0) {
-                preference.setSummary(listPreference.getEntries()[prefIndex]);
-            }
-        } else {
-            // For other preferences, set the summary to the value's simple string representation.
-            ParseQuery<ParseObject> query = ParseQuery.getQuery(getString(R.string.test_parse_class_key));
-
-            // Retrieve the object by id
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String objectId = prefs.getString(getString(R.string.user_id_key), "");
-            query.getInBackground(objectId, new GetCallback<ParseObject>() {
-                public void done(ParseObject user_profile, ParseException e) {
-                    if (e == null) {
-                        // Now let's update it with some new data. In this case, only cheatMode and score
-                        // will get sent to the Parse Cloud. playerName hasn't changed.
-                        user_profile.put(preference.getKey(), stringValue);
-                        user_profile.saveInBackground();
-                    }
+                    user_profile.put(preference.getKey(), stringValue);
+                    user_profile.saveInBackground();
                 }
-            });
-
-
-            preference.setSummary(stringValue);
-        }
+            }
+        });
+        // change the file
+        preference.setSummary(stringValue);
         return true;
     }
 }
