@@ -75,6 +75,13 @@
         <activity android:name=".AddActivity"
             android:label="Add"
             android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/*"/>
+                <data android:pathPattern=".*\\.txt" />
+                <data android:scheme="file" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".QrEncodeActivity"
