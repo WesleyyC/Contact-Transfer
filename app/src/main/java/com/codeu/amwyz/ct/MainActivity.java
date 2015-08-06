@@ -123,10 +123,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Intent qrIntent = new Intent(this, QRActivity.class);
                 startActivity(qrIntent);
                 break;
-	        case R.id.nfc_button:
-                Intent nfcIntent = new Intent(this, NFCActivity.class);
-                startActivity(nfcIntent);
-                break;
+//	        case R.id.nfc_button:
+//                Intent nfcIntent = new Intent(this, NFCActivity.class);
+//                startActivity(nfcIntent);
+//                break;
             case R.id.share_button:{
                 break;
             }
