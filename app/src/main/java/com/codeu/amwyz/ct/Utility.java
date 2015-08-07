@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.codeu.amwyz.ct.data.ContactContract;
+import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -60,5 +61,17 @@ public class Utility {
                 }
             }
         });
+    }
+
+    public static void QRAdd(Context context, String parseId){
+        addContacts(context,parseId);
+        CTSyncAdapter.syncImmediately(context);
+    }
+
+    public static void NFCAdd(Context context, String user_parse_id, String user_real_name, String user_phone, String user_email, String user_facebook, String user_linkedin){
+        addContacts(context, user_parse_id);
+        ContentValues newValue = createContactValues(user_parse_id,user_real_name,user_phone,user_email,user_facebook,user_linkedin);
+        context.getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
+        CTSyncAdapter.syncImmediately(context);
     }
 }
