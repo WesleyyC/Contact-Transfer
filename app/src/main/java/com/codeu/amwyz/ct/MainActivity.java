@@ -1,6 +1,7 @@
 package com.codeu.amwyz.ct;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,7 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.codeu.amwyz.ct.data.ContactContract;
 import com.codeu.amwyz.ct.sync.CTSyncAdapter;
+import com.codeu.amwyz.ct.Utility;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
@@ -134,6 +137,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Intent contactsIntent = new Intent(this, ContactsActivity.class);
                 startActivity(contactsIntent);
                 break;
+            }
+            case R.id.test_contacts:{
+                ContentValues newValue = Utility.createContactValues("abcd", "testing", "123-456-7890", "testing@gmail.com",
+                        "facebook", "linkedin");
+                this.getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI, newValue);
             }
         }
     }

@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Layout for contact list item.-->
+<!--Buttons currently hardcoded. Will be changed to dynamic fragments-->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--Bind things in the contact adapter-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:id="@+id/list_item_contacts_textview" />
+    android:orientation="horizontal">
+
+<!--    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_contacts_textview"/>-->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/list_item_icon_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher"
+            android:onClick="onContactsClick"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/list_item_name_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Jane Doe"/>
+
+    <LinearLayout
+        android:id="@+id/list_item_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/list_item_import_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Import"
+            android:onClick="onContactsClick"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FB"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LI"/>
+    </LinearLayout>
+</LinearLayout>
+
