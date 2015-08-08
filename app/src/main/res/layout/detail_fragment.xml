@@ -152,22 +152,22 @@
             android:layout_weight="1"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/button_export"
+                android:id="@+id/export_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Export"
-                android:onClick="exportContact"
+                android:onClick="onDetailContactsClick"
                 android:background="#c7ffd4"/>
             <Button
-                android:id="@+id/button_delete"
+                android:id="@+id/delete_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Delete"
-                android:onClick="deleteContact"
+                android:onClick="onDetailContactsClick"
                 android:background="#ffc8d0"/>
         </LinearLayout>
     </LinearLayout>

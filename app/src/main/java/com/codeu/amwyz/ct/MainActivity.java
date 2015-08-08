@@ -139,9 +139,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             }
             case R.id.test_contacts:{
+                ContentValues newValue2 = Utility.createContactValues("fhas", "testing2", "111-222-3333", "testing@yahoo.com",
+                        "facebook2", "linkedin2");
+                this.getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI, newValue2);
+
                 ContentValues newValue = Utility.createContactValues("abcd", "testing", "123-456-7890", "testing@gmail.com",
                         "facebook", "linkedin");
                 this.getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI, newValue);
+
             }
         }
     }

@@ -1,18 +1,18 @@
 package com.codeu.amwyz.ct;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codeu.amwyz.ct.data.ContactContract;
@@ -25,7 +25,7 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     // Initalize the listView and the cursor adpater
-    private ContactAdapter mContactsAdapter;
+    private ContactAdapter mContactAdapter;
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
 
@@ -49,8 +49,6 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COLUMN_USER_FACEBOOK = 5;
     static final int COLUMN_USER_EMAIL = 6;
 
-    private Cursor contactsCursor;
-
     // place holder
     public ContactsFragment(){
 
@@ -61,13 +59,24 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState){
         // create a cursor adapter
 
-        mContactsAdapter = new ContactAdapter(getActivity(),null,0);
+        mContactAdapter = new ContactAdapter(getActivity(),null,0);
         // inflate the fragment
         View rootView = inflater.inflate(R.layout.contacts_fragment, container, false);
         // bind the adapter to the list view
         mListView = (ListView) rootView.findViewById(R.id.listview_contacts);
-        mListView.setAdapter(mContactsAdapter);
+        mListView.setAdapter(mContactAdapter);
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                if(cursor != null){
+                    Intent intent = new Intent(getActivity(), DetailContacts.class)
+                            .setData(ContactContract.ContactEntry.buildContactUri(id));
+                    startActivity(intent);
+                }
+            }
+        });
         return rootView;
     }
 
@@ -100,12 +109,13 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mContactsAdapter.swapCursor(data);
+        mContactAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mContactsAdapter.swapCursor(null);
+        mContactAdapter.swapCursor(null);
     }
+
 
 }

@@ -39,11 +39,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/list_item_import_button"
+            android:id="@+id/list_item_export_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Import"
-            android:onClick="onContactsClick"/>
+            android:onClick="onDetailContactsClick"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

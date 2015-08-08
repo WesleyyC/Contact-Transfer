@@ -1,10 +1,12 @@
 package com.codeu.amwyz.ct;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -12,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.codeu.amwyz.ct.data.ContactContract;
@@ -25,8 +26,6 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
     private static final String LOG_TAG = DetailContactsFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
 
-    private ShareActionProvider mShareActionProvider;
-    private String mContacts;
     private Uri mUri;
 
     // ID for loader
@@ -68,6 +67,7 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
             }
         }
 
+        //mContactAdapter = new ContactAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
 
         mIconView = (ImageView) rootView.findViewById(R.id.contact_icon);
@@ -89,25 +89,21 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "onCreateLoader");
-        if(null != mUri){
-            Log.d(LOG_TAG, "onCreateLoader null != mUri");
-            //create a CursorLoader to take care of data being displayed
-            return new CursorLoader(
-                    getActivity(),
-                    mUri,
-                    DETAIL_COLUMNS,
-                    null,
-                    null,
-                    null
-            );
-        }
-        return null;
+        mUri = ContactContract.ContactEntry.CONTENT_URI;
+        return new CursorLoader(
+                getActivity(),
+                mUri,
+                DETAIL_COLUMNS,
+                null,
+                null,
+                null
+        );
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(data != null && data.moveToFirst()){
+        if(data != null && data.getCount()>0){
+            data.moveToFirst();
 
             //default to the app icon
             mIconView.setImageResource(R.mipmap.ic_launcher);
@@ -137,11 +133,22 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
             //read to get the linkedIn identification
             String linkedin = data.getString(COLUMN_USER_LINKEDIN);
             mLinkedinView.setText(linkedin);
+
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        Log.d(LOG_TAG, "onLoaderReset");
+    }
 
+    public void onDetailContactsClick(View v){
+        switch(v.getId()){
+            case R.id.export_button:
+                break;
+            case R.id.delete_button:
+                break;
+        }
     }
 }

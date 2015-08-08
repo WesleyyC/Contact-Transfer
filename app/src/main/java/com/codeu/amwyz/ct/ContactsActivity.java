@@ -58,11 +58,6 @@ public class ContactsActivity extends ActionBarActivity{
                 Intent detailsIntent = new Intent(this, DetailContacts.class);
                 startActivity(detailsIntent);
                 break;
-            case R.id.list_item_import_button:
-                Intent nfcIntent = new Intent(this, NFCActivity.class);
-                startActivity(nfcIntent);
-                break;
         }
-
     }
 }
