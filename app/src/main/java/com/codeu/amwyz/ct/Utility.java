@@ -83,4 +83,35 @@ public class Utility {
                 Uri.parse(facebookURL));
         context.startActivity(i);
     }
+
+    public static boolean removeContact(final Context context, String parseId){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> contactsSet = prefs.getStringSet(context.getString(R.string.user_contacts_key), new HashSet<String>());
+        boolean clear = contactsSet.remove(parseId);
+
+        if(clear){
+            prefs.edit().putStringSet(context.getString(R.string.user_contacts_key), contactsSet);
+            final Set<String> updateContactSet = new HashSet<>(contactsSet);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
+            String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+
+                public void done(ParseObject user_profile, ParseException e) {
+                    if (e == null) {
+                        user_profile.put(context.getString(R.string.user_contacts_key), new JSONArray(updateContactSet));
+                        user_profile.saveInBackground();
+                    }
+                }
+            });
+        }
+        return clear;
+    }
+
+    public static boolean removeAndSync(Context context, String parseID){
+        if(removeContact(context,parseID)){
+            CTSyncAdapter.syncImmediately(context);
+            return true;
+        }
+        return false;
+    }
 }
