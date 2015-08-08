@@ -28,14 +28,14 @@ public class ContactAdapter extends CursorAdapter {
         // need to update with dynamic buttons for facebook and linkedIn
         //public final ImageButton iconButton;
         public final TextView nameView;
-        public final Button exportButton;
+        //public final Button exportButton;
 
         public ViewHolder(View view) {
             //todo: change
             //descriptionView = (TextView) view.findViewById(R.id.list_item_contacts_textview);
             //iconButton = (ImageButton) view.findViewById(R.id.list_item_icon_button);
             nameView = (TextView) view.findViewById(R.id.list_item_name_textview);
-            exportButton = (Button) view.findViewById(R.id.list_item_export_button);
+            //exportButton = (Button) view.findViewById(R.id.list_item_export_button);
         }
     }
 

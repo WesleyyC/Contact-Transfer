@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
  */
 // Implmented with a Loader and cursor adapter
 public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final String LOG_TAG = "ContactFragment";//ContactsFragment.class.getSimpleName();
 
     // Initalize the listView and the cursor adpater
     private ContactAdapter mContactAdapter;
@@ -69,6 +71,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(LOG_TAG, position + ", " + id);
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
                 if(cursor != null){
                     Intent intent = new Intent(getActivity(), DetailContacts.class)

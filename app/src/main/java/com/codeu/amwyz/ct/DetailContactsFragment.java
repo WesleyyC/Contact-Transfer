@@ -89,10 +89,14 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        mUri = ContactContract.ContactEntry.CONTENT_URI;
+        //mUri = ContactContract.ContactEntry.CONTENT_URI;
+        Intent intent = getActivity().getIntent();
+        if(intent == null){
+            return null;
+        }
         return new CursorLoader(
                 getActivity(),
-                mUri,
+                intent.getData(),
                 DETAIL_COLUMNS,
                 null,
                 null,

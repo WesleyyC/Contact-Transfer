@@ -8,12 +8,9 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants" >
 
-<!--    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_item_contacts_textview"/>-->
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -22,8 +19,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher"
-            android:onClick="onContactsClick"/>
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:src="@mipmap/ic_launcher"/>
     </FrameLayout>
 
     <TextView
@@ -38,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <!--<Button
             android:id="@+id/list_item_export_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +50,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LI"/>
+            android:text="LI"/>-->
     </LinearLayout>
 </LinearLayout>
 

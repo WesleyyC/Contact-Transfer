@@ -81,6 +81,9 @@
         <activity android:name=".DetailContacts"
             android:label="Details"
             android:parentActivityName=".ContactsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
 
         <provider
