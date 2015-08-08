@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 
@@ -49,5 +50,19 @@ public class ContactsActivity extends ActionBarActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onContactsClick(View v){
+        switch(v.getId()){
+            case R.id.list_item_icon_button:
+                Intent detailsIntent = new Intent(this, DetailContacts.class);
+                startActivity(detailsIntent);
+                break;
+            case R.id.list_item_import_button:
+                Intent nfcIntent = new Intent(this, NFCActivity.class);
+                startActivity(nfcIntent);
+                break;
+        }
+
     }
 }
