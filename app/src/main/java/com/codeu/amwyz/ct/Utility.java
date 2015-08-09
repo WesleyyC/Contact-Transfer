@@ -4,18 +4,23 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.codeu.amwyz.ct.data.ContactContract;
 import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -37,10 +42,10 @@ public class Utility {
         ContentValues testValues = new ContentValues();
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_PARSE_ID, user_parse_id);
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_REAL_NAME, user_real_name);
-        testValues.put(ContactContract.ContactEntry.COLUMN_USER_PHONE,user_phone);
+        testValues.put(ContactContract.ContactEntry.COLUMN_USER_PHONE, user_phone);
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_EMAIL,user_email);
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_FACEBOOK,user_facebook);
-        testValues.put(ContactContract.ContactEntry.COLUMN_USER_LINKEDIN,user_linkedin);
+        testValues.put(ContactContract.ContactEntry.COLUMN_USER_LINKEDIN, user_linkedin);
         return testValues;
     }
 
@@ -66,7 +71,7 @@ public class Utility {
     }
 
     public static void QRAdd(Context context, String parseId){
-        addContacts(context,parseId);
+        addContacts(context, parseId);
         CTSyncAdapter.syncImmediately(context);
     }
 
@@ -113,5 +118,48 @@ public class Utility {
             return true;
         }
         return false;
+    }
+
+    public static void updateProfilePicture(Context context, Bitmap img){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] scaledData = stream.toByteArray();
+        final ParseFile photoFile = new ParseFile("profile_photo.jpg", scaledData);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            public void done(ParseObject user_profile, ParseException e) {
+                if (e == null) {
+                    user_profile.put("user_profile", photoFile);
+                    user_profile.saveInBackground();
+                }
+            }
+        });
+    }
+
+    public static Bitmap getProfilePicture(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
+        try {
+            ParseObject user_profile = query.get(objectId);
+            ParseFile newI = user_profile.getParseFile("user_profile");
+            try {
+                byte[] dataN = newI.getData();
+                Bitmap newImage = BitmapFactory.decodeByteArray(dataN, 0, dataN.length);
+                return newImage;
+            } catch (ParseException e) {
+                Toast.makeText(context, "Get Data Fail:" + e.toString(), Toast.LENGTH_LONG);
+                return null;
+            }
+
+        }catch(ParseException e) {
+            Toast.makeText(context, "Get Query Fail:" + e.toString(), Toast.LENGTH_LONG);
+            return null;
+        }
     }
 }

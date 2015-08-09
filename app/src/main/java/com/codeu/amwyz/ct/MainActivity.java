@@ -110,6 +110,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, com.codeu.amwyz.ct.SettingsActivity.class));
             return true;
+        }else if (id == R.id.action_photo) {
+            startActivity(new Intent(this, com.codeu.amwyz.ct.PhotoActivity.class));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
