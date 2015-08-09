@@ -98,13 +98,10 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
     private View.OnClickListener mOnDeleteClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d(LOG_TAG, "inside delete click listener");
             String parseId = mParseIdView.getText().toString();
-            if(Utility.removeContactAndSync(getActivity(), parseId)){
-                Log.d(LOG_TAG, "successfully removed contact");
-                getActivity().finish();
-            }
-            Log.d(LOG_TAG, "not removed??");
+            Utility.removeContactAndSync(getActivity(), parseId);
+            // finish current activity and go back
+            getActivity().finish();
         }
     };
 

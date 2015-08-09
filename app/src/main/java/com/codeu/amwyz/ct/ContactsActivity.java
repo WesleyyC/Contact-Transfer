@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -40,24 +39,14 @@ public class ContactsActivity extends ActionBarActivity{
     }
 
     @Override
+    // update the loader and sync data when we go back from the delete
     protected void onResume() {
         super.onResume();
-        Log.d(LOG_TAG,"In Resume");
         ContactsFragment df = (ContactsFragment)getSupportFragmentManager().findFragmentById(R.id.contacts_container);
         if ( null != df ) {
             df.updateContact();
         }
     }
-
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        Log.d(LOG_TAG, "In Restart");
-//        ContactsFragment df = (ContactsFragment)getSupportFragmentManager().findFragmentById(R.id.contacts_container);
-//        if ( null != df ) {
-//            df.updateContact();
-//        }
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
