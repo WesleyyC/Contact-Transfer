@@ -4,21 +4,27 @@ package com.codeu.amwyz.ct;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.support.v7.widget.Toolbar;
 
+import com.facebook.AccessToken;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import java.util.Arrays;
 
 
 public class SettingsActivity extends PreferenceActivity
@@ -35,7 +41,7 @@ public class SettingsActivity extends PreferenceActivity
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_real_name_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_phone_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_email_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.user_facebook_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.user_facebook_key_provided)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_linkedin_key)));
     }
 
@@ -61,7 +67,7 @@ public class SettingsActivity extends PreferenceActivity
             TypedValue tv = new TypedValue();
             if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
                 height = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            }else{
+            } else {
                 height = bar.getHeight();
             }
 
@@ -101,6 +107,20 @@ public class SettingsActivity extends PreferenceActivity
         // get the updated value
         final String stringValue = value.toString();
         // get objectID
+
+        if (preference.getKey().equals(R.string.user_facebook_key_provided)) {
+            CheckBoxPreference pref = (CheckBoxPreference) preference;
+            SharedPreferences sharedPreferences = this.getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (pref.isChecked()) {
+                editor.putString("facebook_user_id",facebookLogin());
+                Utility.facebookIntent(this, facebookLogin());
+            }
+            else{
+                if(sharedPreferences.contains("facebook_user_id"))
+                    editor.remove("facebook_user_id");
+            }
+        }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String objectId = prefs.getString(getString(R.string.user_id_key), "");
         // Retrieve the object by id and update
@@ -118,4 +138,26 @@ public class SettingsActivity extends PreferenceActivity
         preference.setSummary(stringValue);
         return true;
     }
+
+    private String facebookLogin() {
+        LoginManager loginManager = LoginManager.getInstance();
+        if(!isLoggedIn()){
+            loginManager.logInWithReadPermissions(
+                    this,
+                    Arrays.asList("public_profile"));
+
+            Profile profile = Profile.getCurrentProfile();
+            return profile.getId();
+        }
+        else{
+            return null;
+        }
+    }
+
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
+    }
+
+
 }
