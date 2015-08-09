@@ -14,7 +14,6 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 
@@ -126,11 +125,7 @@ public class Utility {
                 public void done(ParseObject user_profile, ParseException e) {
                     if (e == null) {
                         user_profile.put(context.getString(R.string.user_contacts_key), new JSONArray(updateContactSet));
-                        user_profile.saveInBackground(new SaveCallback() {
-                            public void done(ParseException e) {
-                                CTSyncAdapter.syncImmediately(context);
-                            }
-                        });
+                        user_profile.saveInBackground();
                     }
                 }
             });

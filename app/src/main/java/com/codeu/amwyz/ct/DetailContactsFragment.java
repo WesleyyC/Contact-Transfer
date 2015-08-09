@@ -102,8 +102,7 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
             String parseId = mParseIdView.getText().toString();
             if(Utility.removeContactAndSync(getActivity(), parseId)){
                 Log.d(LOG_TAG, "successfully removed contact");
-                Intent returnBack = new Intent(getActivity(), ContactsActivity.class);
-                startActivity(returnBack);
+                getActivity().finish();
             }
             Log.d(LOG_TAG, "not removed??");
         }

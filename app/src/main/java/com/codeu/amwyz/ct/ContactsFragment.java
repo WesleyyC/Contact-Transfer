@@ -81,7 +81,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
             }
         });
 
-        updateContact();
+//        updateContact();
         return rootView;
     }
 
@@ -95,6 +95,8 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     // A update function for update contacts
     public void updateContact() {
         CTSyncAdapter.syncImmediately(getActivity());
+        getLoaderManager().restartLoader(CONTACT_LOADER,null,this);
+        Log.d(LOG_TAG,"In update");
     }
 
     @Override
