@@ -158,7 +158,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Export"
-                android:onClick="onDetailContactsClick"
                 android:background="#c7ffd4"/>
             <Button
                 android:id="@+id/delete_button"
@@ -167,7 +166,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Delete"
-                android:onClick="onDetailContactsClick"
                 android:background="#ffc8d0"/>
         </LinearLayout>
     </LinearLayout>

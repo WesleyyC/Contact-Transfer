@@ -13,6 +13,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 
@@ -37,10 +38,10 @@ public class Utility {
         ContentValues testValues = new ContentValues();
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_PARSE_ID, user_parse_id);
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_REAL_NAME, user_real_name);
-        testValues.put(ContactContract.ContactEntry.COLUMN_USER_PHONE,user_phone);
+        testValues.put(ContactContract.ContactEntry.COLUMN_USER_PHONE, user_phone);
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_EMAIL,user_email);
         testValues.put(ContactContract.ContactEntry.COLUMN_USER_FACEBOOK,user_facebook);
-        testValues.put(ContactContract.ContactEntry.COLUMN_USER_LINKEDIN,user_linkedin);
+        testValues.put(ContactContract.ContactEntry.COLUMN_USER_LINKEDIN, user_linkedin);
         return testValues;
     }
 
@@ -66,7 +67,7 @@ public class Utility {
     }
 
     public static void QRAdd(Context context, String parseId){
-        addContacts(context,parseId);
+        addContacts(context, parseId);
         CTSyncAdapter.syncImmediately(context);
     }
 
@@ -107,11 +108,29 @@ public class Utility {
         return clear;
     }
 
-    public static boolean removeAndSync(Context context, String parseID){
-        if(removeContact(context,parseID)){
-            CTSyncAdapter.syncImmediately(context);
-            return true;
+    public static boolean removeContactAndSync(final Context context, String parseId){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> contactsSet = prefs.getStringSet(context.getString(R.string.user_contacts_key), new HashSet<String>());
+        boolean clear = contactsSet.remove(parseId);
+
+        if(clear){
+            prefs.edit().putStringSet(context.getString(R.string.user_contacts_key), contactsSet);
+            final Set<String> updateContactSet = new HashSet<>(contactsSet);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
+            final String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                public void done(ParseObject user_profile, ParseException e) {
+                    if (e == null) {
+                        user_profile.put(context.getString(R.string.user_contacts_key), new JSONArray(updateContactSet));
+                        user_profile.saveInBackground(new SaveCallback() {
+                            public void done(ParseException e) {
+                                CTSyncAdapter.syncImmediately(context);
+                            }
+                        });
+                    }
+                }
+            });
         }
-        return false;
+        return clear;
     }
 }

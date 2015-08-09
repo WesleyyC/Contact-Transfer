@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -13,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codeu.amwyz.ct.data.ContactContract;
 
@@ -25,8 +28,6 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
 
     private static final String LOG_TAG = DetailContactsFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
-
-    private Uri mUri;
 
     // ID for loader
     private static final int DETAIL_LOADER = 0;
@@ -59,13 +60,6 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        Bundle arguments = getArguments();
-        if(arguments != null){
-            mUri = arguments.getParcelable(DetailContactsFragment.DETAIL_URI);
-            if(mUri == null) {
-                Log.d(LOG_TAG, "mUri is null");
-            }
-        }
 
         //mContactAdapter = new ContactAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
@@ -77,9 +71,46 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
         mEmailView = (TextView) rootView.findViewById(R.id.contact_email);
         mFacebookView = (TextView) rootView.findViewById(R.id.contact_facebook);
         mLinkedinView = (TextView) rootView.findViewById(R.id.contact_linkedin);
-        Log.d(LOG_TAG, "onCreateView");
+
+        Button exportButton = (Button) rootView.findViewById(R.id.export_button);
+        Button deleteButton = (Button) rootView.findViewById(R.id.delete_button);
+
+        exportButton.setOnClickListener(mOnExportClickListener);
+        deleteButton.setOnClickListener(mOnDeleteClickListener);
+
         return rootView;
     }
+
+    private View.OnClickListener mOnExportClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent contactIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+            //set the MIME type to match the Contacts Provider
+            contactIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+
+            //inserts new data into the intent
+            contactIntent.putExtra(ContactsContract.Intents.Insert.NAME, mNameView.getText()) //name
+                    .putExtra(ContactsContract.Intents.Insert.EMAIL, mEmailView.getText()) //email
+                    .putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK) //email type defaulting to work
+                    .putExtra(ContactsContract.Intents.Insert.PHONE, mPhoneView.getText())
+                    .putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);//defaulting to mobile, as an extra could be changed
+            startActivity(contactIntent);
+        }
+    };
+
+    private View.OnClickListener mOnDeleteClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.d(LOG_TAG, "inside delete click listener");
+            String parseId = mParseIdView.getText().toString();
+            if(Utility.removeContactAndSync(getActivity(), parseId)){
+                Log.d(LOG_TAG, "successfully removed contact");
+                Intent returnBack = new Intent(getActivity(), ContactsActivity.class);
+                startActivity(returnBack);
+            }
+            Log.d(LOG_TAG, "not removed??");
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
@@ -89,7 +120,6 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        //mUri = ContactContract.ContactEntry.CONTENT_URI;
         Intent intent = getActivity().getIntent();
         if(intent == null){
             return null;
@@ -115,7 +145,6 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
             //read cursor to get name
             String name = data.getString(COLUMN_USER_REAL_NAME);
             mNameView.setText(name);
-            Log.d(LOG_TAG, "onLoadFinished " + name);
 
             //read cursor to get the parse id
             String parseId = data.getString(COLUMN_USER_PARSE_ID);
@@ -124,7 +153,6 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
             //read cursor to get the phone number
             String phone = data.getString(COLUMN_USER_PHONE);
             mPhoneView.setText(phone);
-            Log.d(LOG_TAG, "onLoadFinished " + phone);
 
             //read the email from the cursor and update
             String email = data.getString(COLUMN_USER_EMAIL);
@@ -144,15 +172,5 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
-        Log.d(LOG_TAG, "onLoaderReset");
-    }
-
-    public void onDetailContactsClick(View v){
-        switch(v.getId()){
-            case R.id.export_button:
-                break;
-            case R.id.delete_button:
-                break;
-        }
     }
 }

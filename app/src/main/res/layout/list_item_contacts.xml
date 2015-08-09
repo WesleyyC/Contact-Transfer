@@ -37,20 +37,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <!--<Button
+        <Button
             android:id="@+id/list_item_export_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Import"
+            android:focusable="false"
+            android:text="Export"
             android:onClick="onDetailContactsClick"/>
         <Button
+            android:id="@+id/list_item_fb_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:text="FB"/>
         <Button
+            android:id="@+id/list_item_li_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LI"/>-->
+            android:focusable="false"
+            android:text="LI"/>
     </LinearLayout>
 </LinearLayout>
 

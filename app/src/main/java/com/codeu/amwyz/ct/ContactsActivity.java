@@ -51,13 +51,5 @@ public class ContactsActivity extends ActionBarActivity{
 
         return super.onOptionsItemSelected(item);
     }
-/*
-    public void onContactsClick(View v){
-        switch(v.getId()){
-            case R.id.list_item_icon_button:
-                Intent detailsIntent = new Intent(this, DetailContacts.class);
-                startActivity(detailsIntent);
-                break;
-        }
-    }*/
+
 }
