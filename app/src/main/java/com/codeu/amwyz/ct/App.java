@@ -5,10 +5,8 @@ package com.codeu.amwyz.ct;
  */
 
 import android.app.Application;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 
 public class App extends Application {
@@ -20,7 +18,7 @@ public class App extends Application {
 
         Parse.initialize(this, "XqIZtjIyDFCKbKQhhvc3esRE48SOai6XAPODZq16", "YUJDQfuYKsSOmvPdOKj19oEL4lQVpxFeEOSuv47k");
 
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
 
