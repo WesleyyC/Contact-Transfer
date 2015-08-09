@@ -17,6 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 
@@ -89,7 +90,7 @@ public class Utility {
         context.startActivity(i);
     }
 
-    public static boolean removeContact(final Context context, String parseId){
+    public static boolean removeContactAndSync(final Context context, String parseId){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> contactsSet = prefs.getStringSet(context.getString(R.string.user_contacts_key), new HashSet<String>());
         boolean clear = contactsSet.remove(parseId);
@@ -98,13 +99,16 @@ public class Utility {
             prefs.edit().putStringSet(context.getString(R.string.user_contacts_key), contactsSet);
             final Set<String> updateContactSet = new HashSet<>(contactsSet);
             ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
-            String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
+            final String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
-
                 public void done(ParseObject user_profile, ParseException e) {
                     if (e == null) {
                         user_profile.put(context.getString(R.string.user_contacts_key), new JSONArray(updateContactSet));
-                        user_profile.saveInBackground();
+                        user_profile.saveInBackground(new SaveCallback(){
+                            public void done(ParseException e){
+                                CTSyncAdapter.syncImmediately(context);
+                            }
+                        });
                     }
                 }
             });
@@ -112,17 +116,9 @@ public class Utility {
         return clear;
     }
 
-    public static boolean removeAndSync(Context context, String parseID){
-        if(removeContact(context,parseID)){
-            CTSyncAdapter.syncImmediately(context);
-            return true;
-        }
-        return false;
-    }
-
     public static void updateProfilePicture(Context context, Bitmap img){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
         byte[] scaledData = stream.toByteArray();
         final ParseFile photoFile = new ParseFile("profile_photo.jpg", scaledData);
 
