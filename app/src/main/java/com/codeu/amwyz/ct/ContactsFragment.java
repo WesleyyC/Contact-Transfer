@@ -80,6 +80,8 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
                 }
             }
         });
+
+        updateContact();
         return rootView;
     }
 

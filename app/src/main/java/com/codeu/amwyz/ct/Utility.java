@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.codeu.amwyz.ct.data.ContactContract;
 import com.codeu.amwyz.ct.sync.CTSyncAdapter;
@@ -111,9 +112,12 @@ public class Utility {
     public static boolean removeContactAndSync(final Context context, String parseId){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> contactsSet = prefs.getStringSet(context.getString(R.string.user_contacts_key), new HashSet<String>());
+        Log.d("before clear", contactsSet.toArray().toString());
         boolean clear = contactsSet.remove(parseId);
+        Log.d("after clear", contactsSet.toArray().toString());
 
         if(clear){
+            Log.d("Utility", "able to remove from local");
             prefs.edit().putStringSet(context.getString(R.string.user_contacts_key), contactsSet);
             final Set<String> updateContactSet = new HashSet<>(contactsSet);
             ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));

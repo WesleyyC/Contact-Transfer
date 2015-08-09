@@ -2,12 +2,10 @@ package com.codeu.amwyz.ct;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codeu.amwyz.ct.data.ContactContract;
 
@@ -147,7 +144,8 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
             mNameView.setText(name);
 
             //read cursor to get the parse id
-            String parseId = data.getString(COLUMN_USER_PARSE_ID);
+            String parseId = data.getString(COLUMN_USER_PARSE_ID).substring(2);
+            Log.d(LOG_TAG,parseId);
             mParseIdView.setText(parseId);
 
             //read cursor to get the phone number
