@@ -14,7 +14,7 @@ public class DetailContacts extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_contacts_main);
+        setContentView(R.layout.detail_main);
 
         if(savedInstanceState == null){
             Bundle arguments = new Bundle();

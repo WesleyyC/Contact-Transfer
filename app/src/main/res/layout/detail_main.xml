@@ -5,4 +5,6 @@
     android:layout_height="match_parent"
     android:id="@+id/contacts_detail_container"
     tools:context="com.codeu.amwyz.ct.DetailContacts"
-    tools:ignore="MergeRootFrame"/>
+    tools:ignore="MergeRootFrame">
+
+</FrameLayout>
