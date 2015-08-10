@@ -77,7 +77,7 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
                                     // insert each ParseObject
                                     for(ParseObject object:objects){
                                         // Create content value with the following method in Utility
-                                        ContentValues newValue = Utility.createContactValues("s " + object.getObjectId(), object.getString(getContext().getString(R.string.user_real_name_key)),
+                                        ContentValues newValue = Utility.createContactValues(object.getObjectId(), object.getString(getContext().getString(R.string.user_real_name_key)),
                                                 object.getString(getContext().getString(R.string.user_phone_key)), object.getString(getContext().getString(R.string.user_email_key)),
                                                 object.getString(getContext().getString(R.string.user_facebook_key)), object.getString(getContext().getString(R.string.user_linkedin_key)));
                                         // Insert
