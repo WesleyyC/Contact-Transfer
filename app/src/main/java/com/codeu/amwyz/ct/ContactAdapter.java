@@ -68,11 +68,24 @@ public class ContactAdapter extends CursorAdapter {
         viewHolder.iconButton.setOnClickListener(onIconClickListener);
         viewHolder.nameView.setOnClickListener(onNameClickListener);
         viewHolder.exportButton.setOnClickListener(onExportClickListener);
+        viewHolder.facebookButton.setOnClickListener(onFacebookClickListener);
 
         view.setTag(viewHolder);
 
         return view;
     }
+
+    private View.OnClickListener onFacebookClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            ListView listView = (ListView) v.getParent().getParent().getParent();
+            final int position = listView.getPositionForView((View)v.getParent());
+            Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+            Log.d(LOG_TAG, "Facebook clicked, row" + position);
+            String facebookId = cursor.getString(COLUMN_USER_FACEBOOK);
+            Utility.facebookIntent(mContext,facebookId);
+        }
+    };
 
     private View.OnClickListener onIconClickListener = new View.OnClickListener() {
         @Override

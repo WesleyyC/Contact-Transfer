@@ -36,7 +36,7 @@ public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
     // contacts_list_setup
-    public static final String[] TEST_CONTACT_ARRAY={"Xhgsv7u7pW","kexbIzRtjc","sma0eYdYTL","E8OetEbIbi","haWykmSo9s","bbkRU8DkS1"};
+    public static final String[] TEST_CONTACT_ARRAY={"Xhgsv7u7pW","kexbIzRtjc","sma0eYdYTL","E8OetEbIbi","haWykmSo9s","bbkRU8DkS1","ITgwO61jmE"};
     public static final List<String> TEST_CONTACT_LIST= Arrays.asList(TEST_CONTACT_ARRAY);
     public static final Set<String> TEST_CONTACT_SET = new HashSet<>(TEST_CONTACT_LIST);
 

@@ -79,7 +79,7 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
                                         // Create content value with the following method in Utility
                                         ContentValues newValue = Utility.createContactValues(object.getObjectId(), object.getString(getContext().getString(R.string.user_real_name_key)),
                                                 object.getString(getContext().getString(R.string.user_phone_key)), object.getString(getContext().getString(R.string.user_email_key)),
-                                                object.getString(getContext().getString(R.string.user_facebook_key_provided)), object.getString(getContext().getString(R.string.user_linkedin_key)));
+                                                object.getString(getContext().getString(R.string.facebook_user_id)), object.getString(getContext().getString(R.string.user_linkedin_key)));
                                         // Insert
                                         Log.d(LOG_TAG,newValue.getAsString(ContactContract.ContactEntry.COLUMN_USER_PARSE_ID));
                                         getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);

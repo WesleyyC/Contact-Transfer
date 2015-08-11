@@ -31,7 +31,7 @@
     <string name="user_phone_default">Some Very Odd Phone Number</string>
     <!-- User Facebook-->
     <string name="user_facebook"> Facebook</string>
-    <string name="user_facebook_key_provided">user_facebook</string>
+    <string name="user_facebook_key_provided">user_facebook_provided</string>
     <string name="facebook_user_id">facebook_user_id</string>
     <string name="user_facebook_default">Some Very Interesting Facebook Profile</string>
     <!-- User Phone Number-->
