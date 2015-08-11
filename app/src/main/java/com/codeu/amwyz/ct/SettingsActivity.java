@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,8 +14,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -49,18 +46,15 @@ public class SettingsActivity extends PreferenceActivity
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
-        ListView v = getListView();
-        v.addFooterView(new Button(this));
+
         //include facebook info as null
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("user_facebook",null);
+
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_real_name_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_phone_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_email_key)));
-        findPreference(getString(R.string.user_facebook_key_provided)).setOnPreferenceClickListener(PreferenceFragment.OnPreferenceStartFragmentCallback
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.user_facebook_key_provided)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_linkedin_key)));
     }
 
@@ -115,16 +109,58 @@ public class SettingsActivity extends PreferenceActivity
 
         // Trigger the listener immediately with the preference's
         // current value.
-        onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+        if(preference.getKey().equals(getString(R.string.user_facebook_key_provided))) {
+            onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getBoolean(preference.getKey(), false));
+        }
+        else{
+            onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getString(preference.getKey(), ""));
+            Log.d("Settings",preference.getKey());
+        }
     }
 
     @Override
     public boolean onPreferenceChange(final Preference preference, Object value) {
         // get the updated value
-       final String stringValue = value.toString();
+       Log.d("Setting",preference.getKey());
+        Log.d("Setting",value.toString());
+        if(preference.getKey().equals(getString(R.string.user_facebook_key_provided))) {
+            // get objectID
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(getString(R.string.facebook_user_id),null).commit();
+
+            if(value.toString().equals("true")){
+                onFblogin();
+                Log.d("ID", prefs.getString(getString(R.string.facebook_user_id), null));
+            }
+
+
+            final String stringValue = prefs.getString(getString(R.string.facebook_user_id),null); //dumb but it works
+            String objectId = prefs.getString(getString(R.string.user_id_key), "");
+
+            // Retrieve the object by id and update
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(getString(R.string.test_parse_class_key));
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                public void done(ParseObject user_profile, ParseException e) {
+                    if (e == null) {
+
+                        user_profile.put(getString(R.string.facebook_user_id), stringValue);
+                        user_profile.saveInBackground();
+                    }
+                }
+            });
+            // change the file
+            preference.setSummary("");
+        }
+
+        final String stringValue = value.toString();
         // get objectID
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String objectId = prefs.getString(getString(R.string.user_id_key), "");
@@ -141,11 +177,11 @@ public class SettingsActivity extends PreferenceActivity
             }
         });
         // change the file
-        preference.setSummary(stringValue);
+      //  preference.setSummary(stringValue);
         return true;
     }
 
-    public void onCheckboxClicked(View view) {
+    /*public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -159,7 +195,7 @@ public class SettingsActivity extends PreferenceActivity
         }
 
         editor.commit();
-    }
+    }*/
 
     private String onFblogin()
     {
@@ -189,6 +225,10 @@ public class SettingsActivity extends PreferenceActivity
                                                 System.out.println("JSON Result" + jsonresult);
 
                                                 String str_id = json.getString("id");
+                                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                                SharedPreferences.Editor editor = prefs.edit();
+                                                editor.putString(getString(R.string.facebook_user_id),str_id).commit();
+                                                Log.d("Setting", prefs.getString(getString(R.string.facebook_user_id), null));
 
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -207,9 +247,11 @@ public class SettingsActivity extends PreferenceActivity
 
                     @Override
                     public void onError(FacebookException error) {
-                        Log.d("Error",error.toString());
+                        Log.d("Error", error.toString());
                     }
                 });
+
+
 
         return str_id;
     }
