@@ -34,13 +34,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Wesley"/>
+                />
             <TextView
                 android:id="@+id/contact_parseId"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="3j2dkp23"/>
+                />
         </LinearLayout>
     </LinearLayout>
 
@@ -75,7 +75,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="3"
                     android:gravity="center"
-                    android:text="617-637-3843"/>
+                    />
             </LinearLayout>
             <LinearLayout
                 android:gravity="center"
@@ -95,7 +95,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="3"
                     android:gravity="center"
-                    android:text="w@gmail.com"/>
+                    />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -122,7 +122,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="3"
                     android:gravity="center"
-                    android:text="w.facebook03"/>
+                    />
             </LinearLayout>
             <LinearLayout
                 android:gravity="center"
@@ -142,7 +142,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="3"
                     android:gravity="center"
-                    android:text="w@linkedin.com"/>
+                    />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -152,22 +152,20 @@
             android:layout_weight="1"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/button_export"
+                android:id="@+id/export_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Export"
-                android:onClick="exportContact"
                 android:background="#c7ffd4"/>
             <Button
-                android:id="@+id/button_delete"
+                android:id="@+id/delete_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Delete"
-                android:onClick="deleteContact"
                 android:background="#ffc8d0"/>
         </LinearLayout>
     </LinearLayout>

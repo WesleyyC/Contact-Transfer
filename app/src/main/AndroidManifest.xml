@@ -19,6 +19,8 @@
         android:name="android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission
         android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission
+        android:name="android.permission.READ_CONTACTS"/>
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -85,8 +87,16 @@
 
         <activity android:name=".QrEncodeActivity"
             android:label="QrEncode"
-            android:parentActivityName=".AddActivity"
-            ></activity>
+            android:parentActivityName=".AddActivity">
+        </activity>
+
+        <activity android:name=".DetailContacts"
+            android:label="Details"
+            android:parentActivityName=".ContactsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
