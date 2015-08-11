@@ -100,17 +100,19 @@ Button receiveNFCButton = (Button) findViewById(R.id.add_NFC_button);
         /*mNfcAdapter.enableForegroundDispatch();*/
 //        mResumed = true;
         // Sticky notes received from Android
-        Log.e(LOG_TAG, getIntent().getAction().toString());
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            Log.e(LOG_TAG, "ndef discovered");
-            Toast.makeText(this, "NDEF MESSAGE DISCOVERED", Toast.LENGTH_LONG).show();
-            NdefMessage[] messages = getNdefMessages(getIntent());
-            byte[] payload = messages[0].getRecords()[0].getPayload();
+        if (getIntent().getAction() != null) {
+            Log.e(LOG_TAG, getIntent().getAction().toString());
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+                Log.e(LOG_TAG, "ndef discovered");
+                Toast.makeText(this, "NDEF MESSAGE DISCOVERED", Toast.LENGTH_LONG).show();
+                NdefMessage[] messages = getNdefMessages(getIntent());
+                byte[] payload = messages[0].getRecords()[0].getPayload();
 //            setNoteBody(new String(payload));
-            //add the contact by getting the parseId from the Ndef message
-            Log.e(LOG_TAG,"payload is: "+  payload.toString());
-            Utility.addContacts(this,payload.toString());
-            //setIntent(new Intent()); // Consume this intent.
+                //add the contact by getting the parseId from the Ndef message
+                Log.e(LOG_TAG, "payload is: " + new String(payload));
+                Utility.QRAdd(this, new String(payload));
+                //setIntent(new Intent()); // Consume this intent.
+            }
         }
 //        enableNdefExchangeMode();
     }

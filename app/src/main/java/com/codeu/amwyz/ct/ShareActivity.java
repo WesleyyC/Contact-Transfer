@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.nio.charset.Charset;
 import java.util.logging.Handler;
 
 /**
@@ -104,7 +105,7 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
         String userParseId = prefs.getString("user_id",null);
         //Create an Ndef record with a text mime type that contains the user parseId
         //as well as an AARecord to force our CT app to open on the receiving phone
-        NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("application/CT",userParseId.getBytes())
+        NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("application/CT",userParseId.getBytes(Charset.forName("US-ASCII")))
               // ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
         });
         return userInfo;
