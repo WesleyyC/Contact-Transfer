@@ -23,7 +23,9 @@ import java.util.logging.Handler;
 /**
  * Created by goodautumn on 8/3/2015.
  */
-public class ShareActivity extends ActionBarActivity implements NfcAdapter.CreateNdefMessageCallback {
+public class ShareActivity extends ActionBarActivity implements NfcAdapter.CreateNdefMessageCallback,
+        NfcAdapter.OnNdefPushCompleteCallback
+{
     private String LOG_TAG = ShareActivity.class.getSimpleName();
     private NfcAdapter mNfcAdapter;
     SharedPreferences prefs;
@@ -61,14 +63,14 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
             String userParseId = prefs.getString("user_id",null);
             //Create an Ndef record with a text mime type that contains the user parseId
             //as well as an AARecord to force our CT app to open on the receiving phone
-            NdefMessage userJSON = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("text/*",userParseId.getBytes())
+            NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("text/*",userParseId.getBytes())
             //        ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
             });
             mNfcAdapter.setNdefPushMessageCallback(callback, mActivity);
-
+            //mNfcAdapter.enableForegroundNdefPush(mActivity, userInfo);
             //mNfcAdapter.setNdefPushMessage(userJSON,mActivity);
 
-            Log.e(LOG_TAG, "ndef pushed");
+            Log.e(LOG_TAG, "ndef push started");
         }
     };
     private View.OnClickListener onShareQRButtonClick = new View.OnClickListener() {
@@ -103,10 +105,14 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
         //Create an Ndef record with a text mime type that contains the user parseId
         //as well as an AARecord to force our CT app to open on the receiving phone
         NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("text/*",userParseId.getBytes())
-                //        ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
+               ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
         });
         return userInfo;
     }
 
+    @Override
+    public void onNdefPushComplete(NfcEvent nfcEvent) {
+        Log.e(LOG_TAG, "NFC push complete");
+    }
 }
 
