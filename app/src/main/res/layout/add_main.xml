@@ -6,26 +6,20 @@
     tools:context=".AddActivity"
     android:id="@+id/share_main_fragment_container">
 
-    <LinearLayout
+    <Button
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:id="@+id/top_add_fragment_container">
+        android:layout_width="match_parent"
+        android:text="RECEIVE NFC"
+        android:id="@+id/add_NFC_button">
+    </Button>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <Button
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:id="@+id/bottom_add_fragment_container">
-
-    </LinearLayout>
+        android:layout_width="match_parent"
+        android:text="SCAN QR"
+        android:id="@+id/add_QR_button">
+    </Button>
 
 </LinearLayout>

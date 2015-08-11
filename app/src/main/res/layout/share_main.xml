@@ -6,26 +6,20 @@
     tools:context=".ShareActivity"
     android:id="@+id/share_main_fragment_container">
 
-    <LinearLayout
+    <Button
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:id="@+id/top_share_fragment_container">
+        android:layout_width="match_parent"
+        android:text="SEND NFC"
+        android:id="@+id/share_NFC_button">
+    </Button>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <Button
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:id="@+id/bottom_share_fragment_container">
-
-    </LinearLayout>
+        android:layout_width="match_parent"
+        android:text="GENERATE QR"
+        android:id="@+id/share_QR_button">
+    </Button>
 
 </LinearLayout>

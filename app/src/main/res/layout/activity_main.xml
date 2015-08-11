@@ -12,36 +12,32 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <RelativeLayout
+        <Button
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/top_left_main_fragment_container">
-        </RelativeLayout>
+            android:text="Add"
+            android:id="@+id/main_add_button">
+        </Button>
 
-        <RelativeLayout
+        <Button
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/top_right_main_fragment_container">
-        </RelativeLayout>
+            android:text="Share"
+            android:id="@+id/main_share_button">
+        </Button>
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <Button
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:id="@+id/bottom_main_fragment_container">
+        android:layout_width="match_parent"
+        android:text="Contacts"
+        android:id="@+id/main_contact_button">
+    </Button>
 
-    </LinearLayout>
 
 </LinearLayout>
