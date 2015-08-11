@@ -61,15 +61,8 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
         @Override
         public void onClick(View v) {
             //Send the contact info
-            String userParseId = prefs.getString("user_id",null);
-            //Create an Ndef record with a text mime type that contains the user parseId
-            //as well as an AARecord to force our CT app to open on the receiving phone
-           /* NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("text*//*",userParseId.getBytes())
-                  ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
-            });*/
+            //String userParseId = prefs.getString("user_id",null);
             mNfcAdapter.setNdefPushMessageCallback(callback, mActivity);
-            //mNfcAdapter.enableForegroundNdefPush(mActivity, userInfo);
-            //mNfcAdapter.setNdefPushMessage(userJSON,mActivity);
 
             Log.e(LOG_TAG, "ndef push started");
         }
@@ -102,10 +95,23 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
     @Override
     public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
         //Send the contact info
-        String userParseId = prefs.getString("user_id",null);
+        String userInfoString = "";
+        //add user parse id
+        userInfoString += prefs.getString("user_id",null) + ",";
+        //add user real name
+        userInfoString += prefs.getString("user_real_name", null) + ",";
+        //add user phone
+        userInfoString += prefs.getString("user_phone", null) + ",";
+        //add user email
+        userInfoString += prefs.getString("user_email", null) + ",";
+        //add user Facebook
+        userInfoString += prefs.getString("user_facebook", null) + ",";
+        //add user LinkedIn
+        userInfoString += prefs.getString("user_linkedin", null);
+
         //Create an Ndef record with a text mime type that contains the user parseId
         //as well as an AARecord to force our CT app to open on the receiving phone
-        NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("application/CT",userParseId.getBytes(Charset.forName("US-ASCII")))
+        NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("application/CT",userInfoString.getBytes(Charset.forName("US-ASCII")))
               // ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
         });
         return userInfo;
