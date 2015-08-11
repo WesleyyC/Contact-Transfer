@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
 import android.widget.TextView;
 
 import com.codeu.amwyz.ct.data.ContactContract;
@@ -144,14 +145,14 @@ public class ContactAdapter extends CursorAdapter {
 
         if(cursor.getString(COLUMN_USER_FACEBOOK) == null){
             //The contact does not have a facebook
-            viewHolder.facebookButton.setVisibility(View.GONE);
+            viewHolder.facebookButton.setEnabled(false);
             //the other option is View.INVISIBLE which leaves a space for where the
             //button should have been
         }
 
         if(cursor.getString(COLUMN_USER_LINKEDIN) == null){
             //contact does not have a linked in
-            viewHolder.linkedinButton.setVisibility(View.GONE);
+            viewHolder.linkedinButton.setEnabled(false);
         }
 
     }

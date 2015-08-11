@@ -18,10 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class PhotoActivity extends Activity {
 
@@ -54,7 +50,6 @@ public class PhotoActivity extends Activity {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(PhotoActivity.this);
-        builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -98,27 +93,10 @@ public class PhotoActivity extends Activity {
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
 
+                    Utility.updateProfilePicture(getApplicationContext(),bitmap);
                     viewImage.setImageBitmap(bitmap);
 
-                    String path = android.os.Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
                     f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -135,7 +113,7 @@ public class PhotoActivity extends Activity {
 
                 Utility.updateProfilePicture(getApplicationContext(),thumbnail);
 
-                viewImage.setImageBitmap(Utility.getProfilePicture(getApplicationContext()));
+                viewImage.setImageBitmap(thumbnail);
 
 
                 Log.w("path of image path: ", picturePath + "");
