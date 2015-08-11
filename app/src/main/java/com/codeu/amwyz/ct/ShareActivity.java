@@ -23,8 +23,8 @@ import java.util.logging.Handler;
 /**
  * Created by goodautumn on 8/3/2015.
  */
-public class ShareActivity extends ActionBarActivity implements NfcAdapter.CreateNdefMessageCallback,
-        NfcAdapter.OnNdefPushCompleteCallback
+public class ShareActivity extends ActionBarActivity implements NfcAdapter.CreateNdefMessageCallback
+        //, NfcAdapter.OnNdefPushCompleteCallback
 {
     private String LOG_TAG = ShareActivity.class.getSimpleName();
     private NfcAdapter mNfcAdapter;
@@ -63,9 +63,9 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
             String userParseId = prefs.getString("user_id",null);
             //Create an Ndef record with a text mime type that contains the user parseId
             //as well as an AARecord to force our CT app to open on the receiving phone
-            NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("text/*",userParseId.getBytes())
-            //        ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
-            });
+           /* NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("text*//*",userParseId.getBytes())
+                  ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
+            });*/
             mNfcAdapter.setNdefPushMessageCallback(callback, mActivity);
             //mNfcAdapter.enableForegroundNdefPush(mActivity, userInfo);
             //mNfcAdapter.setNdefPushMessage(userJSON,mActivity);
@@ -110,9 +110,9 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
         return userInfo;
     }
 
-    @Override
+   /* @Override
     public void onNdefPushComplete(NfcEvent nfcEvent) {
         Log.e(LOG_TAG, "NFC push complete");
-    }
+    }*/
 }
 

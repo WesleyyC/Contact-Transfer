@@ -88,7 +88,7 @@ Button receiveNFCButton = (Button) findViewById(R.id.add_NFC_button);
 
 
     
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
 //        mResumed = true;
@@ -137,5 +137,5 @@ Button receiveNFCButton = (Button) findViewById(R.id.add_NFC_button);
             Toast.makeText(getApplicationContext(), "No NDEF Message Read", Toast.LENGTH_LONG).show();
         }
         return null;
-    }
+    }*/
 }

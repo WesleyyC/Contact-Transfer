@@ -4,8 +4,12 @@ package com.codeu.amwyz.ct;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -26,12 +30,15 @@ import org.json.JSONArray;
 public class MainActivity extends ActionBarActivity {
     // log tag
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private NfcAdapter mNfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Debug.waitForDebugger();
+        Log.e(LOG_TAG, "onCreate called");
         setContentView(R.layout.activity_main);
-
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (savedInstanceState == null){
             // get the id info
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -140,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
         if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
             // NFC is not available on the device.
             Toast.makeText(this, "The device does not has NFC hardware.",
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT);
         }
         // Check whether device is running Android 4.1 or higher
         else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
@@ -153,5 +160,65 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(this, "Android Beam is supported on your device.",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e(LOG_TAG, "onStart called");
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(LOG_TAG, "on resume called");
+
+//        mResumed = true;
+        // Sticky notes received from Android
+        Log.e(LOG_TAG, getIntent().getAction().toString());
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            Log.e(LOG_TAG, "ndef discovered");
+            Toast.makeText(this, "NDEF MESSAGE DISCOVERED", Toast.LENGTH_LONG).show();
+            NdefMessage[] messages = getNdefMessages(getIntent());
+            byte[] payload = messages[0].getRecords()[0].getPayload();
+//            setNoteBody(new String(payload));
+            //add the contact by getting the parseId from the Ndef message
+            Log.e(LOG_TAG,"payload is: "+  payload.toString());
+            Utility.addContacts(this,payload.toString());
+            //setIntent(new Intent()); // Consume this intent.
+        }
+//        enableNdefExchangeMode();
+    }
+
+    //if the onResume method ends up not actually adding the contact,
+    //might need to add the contact from here...?
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // NDEF exchange mode
+//        Log.e(LOG_TAG,"on new intent called");
+//        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+//            NdefMessage[] msgs = getNdefMessages(intent);
+//            //promptForContent(msgs[0]);
+//            Log.e(LOG_TAG,"ndef discovered in onNewIntent");
+//            Utility.addContacts(this,msgs[0].getRecords()[0].getPayload().toString());
+//        }
+        setIntent(intent);
+    }
+
+    public NdefMessage[] getNdefMessages(Intent intent) {
+        NdefMessage[] messages;
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(mNfcAdapter.EXTRA_NDEF_MESSAGES);
+        if (rawMsgs != null) {
+            messages = new NdefMessage[rawMsgs.length];
+            for (int i = 0; i < rawMsgs.length; i++) {
+                messages[i] = (NdefMessage) rawMsgs[i];
+            }
+            return messages;
+        }
+        else if (rawMsgs == null){
+            Toast.makeText(getApplicationContext(), "No NDEF Message Read", Toast.LENGTH_LONG).show();
+        }
+        return null;
     }
 }
