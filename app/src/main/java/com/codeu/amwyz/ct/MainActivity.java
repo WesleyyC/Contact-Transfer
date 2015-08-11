@@ -162,7 +162,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         Log.e(LOG_TAG, "onStart called");
@@ -173,7 +173,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         Log.e(LOG_TAG, "on resume called");
-
+        *//*mNfcAdapter.enableForegroundDispatch();*//*
 //        mResumed = true;
         // Sticky notes received from Android
         Log.e(LOG_TAG, getIntent().getAction().toString());
@@ -220,5 +220,5 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "No NDEF Message Read", Toast.LENGTH_LONG).show();
         }
         return null;
-    }
+    }*/
 }

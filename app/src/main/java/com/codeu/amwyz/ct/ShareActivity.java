@@ -105,7 +105,7 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
         //Create an Ndef record with a text mime type that contains the user parseId
         //as well as an AARecord to force our CT app to open on the receiving phone
         NdefMessage userInfo = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("text/*",userParseId.getBytes())
-               ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
+              // ,NdefRecord.createApplicationRecord("com.codeu.amwyz.ct")
         });
         return userInfo;
     }
