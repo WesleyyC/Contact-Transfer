@@ -16,7 +16,7 @@
             android:id="@+id/btnSelectPhoto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Photo" />
+            android:text="Update Profile Picture" />
 
     </LinearLayout>
 
@@ -30,7 +30,7 @@
             android:id="@+id/viewImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:src="@mipmap/ic_launcher" />
 
     </LinearLayout>
 

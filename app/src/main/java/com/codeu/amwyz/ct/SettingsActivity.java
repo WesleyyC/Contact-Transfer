@@ -41,7 +41,7 @@ public class SettingsActivity extends PreferenceActivity
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_real_name_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_phone_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_email_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.user_facebook_key_provided)));
+//        bindPreferenceSummaryToValue(findPreference(getString(R.string.user_facebook_key_provided)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_linkedin_key)));
     }
 
@@ -158,6 +158,7 @@ public class SettingsActivity extends PreferenceActivity
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
     }
+
 
 
 }
