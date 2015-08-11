@@ -140,7 +140,7 @@ public class SettingsActivity extends PreferenceActivity
                 onFblogin();
                // Log.d("ID", prefs.getString(getString(R.string.facebook_user_id), null));
             }
-            else {
+            else if(value.toString().equals("false")){
                 editor.putString(getString(R.string.facebook_user_id),null).commit();
                 ParseQuery<ParseObject> query = ParseQuery.getQuery(getString(R.string.test_parse_class_key));
                 query.getInBackground(objectId, new GetCallback<ParseObject>() {
