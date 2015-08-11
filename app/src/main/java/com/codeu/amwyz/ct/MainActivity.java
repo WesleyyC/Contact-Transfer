@@ -1,7 +1,6 @@
 package com.codeu.amwyz.ct;
 
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -18,9 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.codeu.amwyz.ct.data.ContactContract;
 import com.codeu.amwyz.ct.sync.CTSyncAdapter;
-import com.codeu.amwyz.ct.Utility;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
@@ -46,7 +43,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         boolean idHasBeenGenerated = prefs.getBoolean(getString(R.string.id_generated_key), false);
         checkNFCCapabilities();
         // if id hasn't been generated, create one and push to Parse server
-        if(!prefs.contains(getString(R.string.user_id_key))){
+        if (!prefs.contains(getString(R.string.user_id_key))) {
             // create an empty parse object
             final ParseObject newObject = new ParseObject(getString(R.string.test_parse_class_key));
             // enter test contact list
@@ -75,22 +72,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     }
                 }
             });
-        }else{
+        } else {
             // User Already Have an Info
             Log.v(LOG_TAG, "Already have ID info");
         }
+        if (savedInstanceState == null){
+            //creating the buttons by attaching the fragments to the activity
+            //todo: put in a method
+            AddButtonFragment addButtonFragment = new AddButtonFragment();
+            fragmentTransaction.add(R.id.top_left_main_fragment_container, addButtonFragment);
 
-        //creating the buttons by attaching the fragments to the activity
-        //todo: put in a method
-        AddButtonFragment addButtonFragment = new AddButtonFragment();
-        fragmentTransaction.add(R.id.top_left_main_fragment_container, addButtonFragment);
+            ShareButtonFragment shareButtonFragment = new ShareButtonFragment();
+            fragmentTransaction.add(R.id.top_right_main_fragment_container, shareButtonFragment);
 
-        ShareButtonFragment shareButtonFragment = new ShareButtonFragment();
-        fragmentTransaction.add(R.id.top_right_main_fragment_container, shareButtonFragment);
-
-        ContactsButtonFragment contactsButtonFragment = new ContactsButtonFragment();
-        fragmentTransaction.add(R.id.bottom_main_fragment_container, contactsButtonFragment);
-        fragmentTransaction.commit();
+            ContactsButtonFragment contactsButtonFragment = new ContactsButtonFragment();
+            fragmentTransaction.add(R.id.bottom_main_fragment_container, contactsButtonFragment);
+            fragmentTransaction.commit();
+        }
 
         CTSyncAdapter.initializeSyncAdapter(this);
     }
@@ -140,20 +138,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Intent contactsIntent = new Intent(this, ContactsActivity.class);
                 startActivity(contactsIntent);
                 break;
-            }
-            case R.id.test_contacts:{
-                ContentValues newValue2 = Utility.createContactValues("efgh", "testing2", "111-222-3333", "testing2@yahoo.com",
-                        "facebook2", "linkedin2");
-                this.getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI, newValue2);
-
-                ContentValues newValue = Utility.createContactValues("abcd", "testing", "123-456-7890", "testing@gmail.com",
-                        "facebook", null);
-                this.getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI, newValue);
-
-                ContentValues newValue3 = Utility.createContactValues("ijkl", "testing3", "999-888-7777", "testing3@gmail.com",
-                        null, "linkedin3");
-                this.getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI, newValue3);
-
             }
         }
     }
