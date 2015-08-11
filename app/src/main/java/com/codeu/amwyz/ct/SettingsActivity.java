@@ -1,14 +1,15 @@
 
 package com.codeu.amwyz.ct;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +17,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.facebook.AccessToken;
-import com.facebook.Profile;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -30,11 +38,16 @@ import java.util.Arrays;
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
+    // Creating Facebook CallbackManager Value
+    public static CallbackManager callbackmanager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
+
+        //include facebook info as null
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
@@ -96,33 +109,62 @@ public class SettingsActivity extends PreferenceActivity
 
         // Trigger the listener immediately with the preference's
         // current value.
-        onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+        if(preference.getKey().equals(getString(R.string.user_facebook_key_provided))) {
+            onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getBoolean(preference.getKey(), false));
+        }
+        else{
+            onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getString(preference.getKey(), ""));
+            Log.d("Settings",preference.getKey());
+        }
     }
 
     @Override
     public boolean onPreferenceChange(final Preference preference, Object value) {
         // get the updated value
+       Log.d("Setting",preference.getKey());
+        Log.d("Setting",value.toString());
+        if(preference.getKey().equals(getString(R.string.user_facebook_key_provided))) {
+            // get objectID
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(getString(R.string.facebook_user_id),null).commit();
+
+            if(value.toString().equals("true")){
+                onFblogin();
+                Log.d("ID", prefs.getString(getString(R.string.facebook_user_id), null));
+            }
+
+
+            final String stringValue = prefs.getString(getString(R.string.facebook_user_id),null); //dumb but it works
+            String objectId = prefs.getString(getString(R.string.user_id_key), "");
+
+            // Retrieve the object by id and update
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(getString(R.string.test_parse_class_key));
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                public void done(ParseObject user_profile, ParseException e) {
+                    if (e == null) {
+
+                        user_profile.put(getString(R.string.facebook_user_id), stringValue);
+                        user_profile.saveInBackground();
+                    }
+                }
+            });
+            // change the file
+            preference.setSummary("");
+        }
+
         final String stringValue = value.toString();
         // get objectID
-
-        if (preference.getKey().equals(R.string.user_facebook_key_provided)) {
-            CheckBoxPreference pref = (CheckBoxPreference) preference;
-            SharedPreferences sharedPreferences = this.getPreferences(MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            if (pref.isChecked()) {
-                editor.putString("facebook_user_id",facebookLogin());
-                Utility.facebookIntent(this, facebookLogin());
-            }
-            else{
-                if(sharedPreferences.contains("facebook_user_id"))
-                    editor.remove("facebook_user_id");
-            }
-        }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String objectId = prefs.getString(getString(R.string.user_id_key), "");
+
         // Retrieve the object by id and update
         ParseQuery<ParseObject> query = ParseQuery.getQuery(getString(R.string.test_parse_class_key));
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -135,28 +177,90 @@ public class SettingsActivity extends PreferenceActivity
             }
         });
         // change the file
-        preference.setSummary(stringValue);
+      //  preference.setSummary(stringValue);
         return true;
     }
 
-    private String facebookLogin() {
-        LoginManager loginManager = LoginManager.getInstance();
-        if(!isLoggedIn()){
-            loginManager.logInWithReadPermissions(
-                    this,
-                    Arrays.asList("public_profile"));
-
-            Profile profile = Profile.getCurrentProfile();
-            return profile.getId();
+    /*public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("user_facebook",null);
+        if(checked){
+            editor.putString("user_facebook",onFblogin());
         }
         else{
-            return null;
+            editor.putString("user_facebook",null);
         }
+
+        editor.commit();
+    }*/
+
+    private String onFblogin()
+    {
+        callbackmanager = CallbackManager.Factory.create();
+        String str_id = ""; //id to be returned
+        // Set permissions
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "user_photos", "public_profile"));
+
+        LoginManager.getInstance().registerCallback(callbackmanager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+
+                        System.out.println("Success");
+                        GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject json, GraphResponse response) {
+                                        if (response.getError() != null) {
+                                            // handle error
+                                            System.out.println("ERROR");
+                                        } else {
+                                            System.out.println("Success");
+                                            try {
+
+                                                String jsonresult = String.valueOf(json);
+                                                System.out.println("JSON Result" + jsonresult);
+
+                                                String str_id = json.getString("id");
+                                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                                SharedPreferences.Editor editor = prefs.edit();
+                                                editor.putString(getString(R.string.facebook_user_id),str_id).commit();
+                                                Log.d("Setting", prefs.getString(getString(R.string.facebook_user_id), null));
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+
+                                }).executeAsync();
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d("Cancel", "On cancel");
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.d("Error", error.toString());
+                    }
+                });
+
+
+
+        return str_id;
     }
 
-    public boolean isLoggedIn() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken != null;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        callbackmanager.onActivityResult(requestCode, resultCode, data);
     }
 
 
