@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.codeu.amwyz.ct.data.ContactContract;
 import com.codeu.amwyz.ct.data.ContactProvider;
-import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -37,7 +36,7 @@ public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
     // contacts_list_setup
-    public static final String[] TEST_CONTACT_ARRAY={"Xhgsv7u7pW","kexbIzRtjc","sma0eYdYTL","E8OetEbIbi","haWykmSo9s"};
+    public static final String[] TEST_CONTACT_ARRAY={"Xhgsv7u7pW","kexbIzRtjc","sma0eYdYTL","E8OetEbIbi","haWykmSo9s","bbkRU8DkS1"};
     public static final List<String> TEST_CONTACT_LIST= Arrays.asList(TEST_CONTACT_ARRAY);
     public static final Set<String> TEST_CONTACT_SET = new HashSet<>(TEST_CONTACT_LIST);
 
@@ -114,22 +113,25 @@ public class Utility {
         });
     }
 
-    public static Bitmap getProfilePicture(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String objectId = prefs.getString(context.getString(R.string.user_id_key), "");
+    public static Bitmap getProfilePicture(Context context, String parseID) {
+
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
         try {
-            ParseObject user_profile = query.get(objectId);
+            ParseObject user_profile = query.get(parseID);
             ParseFile newI = user_profile.getParseFile("user_profile");
-            try {
-                byte[] dataN = newI.getData();
-                Bitmap newImage = BitmapFactory.decodeByteArray(dataN, 0, dataN.length);
-                return newImage;
-            } catch (ParseException e) {
-                Toast.makeText(context, "Get Data Fail:" + e.toString(), Toast.LENGTH_LONG);
-                return null;
+            if(newI != null){
+                try {
+                    byte[] dataN = newI.getData();
+                    Bitmap newImage = BitmapFactory.decodeByteArray(dataN, 0, dataN.length);
+
+                    return newImage;
+                } catch (ParseException e) {
+                    Toast.makeText(context, "Get Data Fail:" + e.toString(), Toast.LENGTH_LONG);
+                    return null;
+                }
             }
+            return null;
 
         } catch (ParseException e) {
             Toast.makeText(context, "Get Query Fail:" + e.toString(), Toast.LENGTH_LONG);

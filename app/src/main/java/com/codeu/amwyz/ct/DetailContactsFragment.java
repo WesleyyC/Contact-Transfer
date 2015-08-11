@@ -2,6 +2,7 @@ package com.codeu.amwyz.ct;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -132,9 +133,6 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
         if(data != null && data.getCount()>0){
             data.moveToFirst();
 
-            //default to the app icon
-            mIconView.setImageResource(R.mipmap.ic_launcher);
-
             //read cursor to get name
             String name = data.getString(COLUMN_USER_REAL_NAME);
             mNameView.setText(name);
@@ -159,6 +157,16 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
             //read to get the linkedIn identification
             String linkedin = data.getString(COLUMN_USER_LINKEDIN);
             mLinkedinView.setText(linkedin);
+
+            //set the app icon
+            String imageID = mParseIdView.getText().toString();
+            Bitmap user_pic = Utility.getProfilePicture(getActivity(),imageID);
+            if(user_pic==null){
+                mIconView.setImageResource(R.mipmap.ic_launcher);
+            }else {
+                mIconView.setImageBitmap(user_pic);
+            }
+
 
         }
     }
