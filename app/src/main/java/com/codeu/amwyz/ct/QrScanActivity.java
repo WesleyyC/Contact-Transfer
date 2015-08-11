@@ -3,7 +3,6 @@ package com.codeu.amwyz.ct;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 import eu.livotov.zxscan.ScannerFragment;
 import eu.livotov.zxscan.ScannerView;
@@ -58,7 +57,6 @@ public class QrScanActivity extends ActionBarActivity implements ScannerView.Sca
 
         //use data to load contact info, save to local database
         Utility.QRAdd(this,data);
-        Log.e("QR ", data);
         Intent toHomeIntent = new Intent(this, MainActivity.class);
         startActivity(toHomeIntent);
         return true;
