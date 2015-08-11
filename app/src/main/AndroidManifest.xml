@@ -2,17 +2,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeu.amwyz.ct" >
 
+    <!-- Requirement for Internet Access-->
     <uses-permission
         android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Requirement for NFC-->
     <uses-permission
         android:name="android.permission.NFC" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <!-- Requirement for Data Storage-->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<!-- Permissions required by the sync adapter -->
+
+    <!-- Requirement for native contact -->
+    <uses-permission
+        android:name="android.permission.READ_CONTACTS"/>
+
+    <!-- Requirement for the sync adapter -->
     <uses-permission
         android:name="android.permission.READ_SYNC_SETTINGS"/>
     <uses-permission
@@ -20,16 +33,19 @@
     <uses-permission
         android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
-    <uses-feature
-        android:name="android.hardware.nfc"
-        android:required="true" />
+    <!--Requirement for profile picture-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
+    <!-- Application Manifest-->
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -52,6 +68,14 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codeu.amwyz.ct.MainActivity" />
+        </activity>
+        <activity
+            android:name=".PhotoActivity"
+            android:label="Photo"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -86,8 +110,22 @@
 
         <activity android:name=".QrEncodeActivity"
             android:label="QrEncode"
-            android:parentActivityName=".AddActivity"
-            ></activity>
+            android:parentActivityName=".AddActivity">
+        </activity>
+
+        <activity android:name=".DetailContacts"
+            android:label="Details"
+            android:parentActivityName=".ContactsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
 
         <provider
             android:name=".data.ContactProvider"

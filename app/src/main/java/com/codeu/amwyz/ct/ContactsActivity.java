@@ -15,6 +15,9 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
  */
 public class ContactsActivity extends ActionBarActivity{
 
+    private static final String LOG_TAG = ContactsActivity.class.getSimpleName();
+
+
     FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -36,6 +39,16 @@ public class ContactsActivity extends ActionBarActivity{
     }
 
     @Override
+    // update the loader and sync data when we go back from the delete
+    protected void onResume() {
+        super.onResume();
+        ContactsFragment df = (ContactsFragment)getSupportFragmentManager().findFragmentById(R.id.contacts_container);
+        if ( null != df ) {
+            df.updateContact();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
@@ -50,4 +63,5 @@ public class ContactsActivity extends ActionBarActivity{
 
         return super.onOptionsItemSelected(item);
     }
+
 }

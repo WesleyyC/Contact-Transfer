@@ -21,9 +21,9 @@
         android:inputType="text"
         android:singleLine="true" />
 
-    <EditTextPreference
+    <CheckBoxPreference
         android:title="@string/user_facebook"
-        android:key="@string/user_facebook_key"
+        android:key="@string/user_facebook_key_provided"
         android:inputType="text"
         android:singleLine="true" />
 

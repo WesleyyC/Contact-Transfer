@@ -2,7 +2,6 @@ package com.codeu.amwyz.ct;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
@@ -14,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.IntentFilter;
 import android.widget.Toast;
+import android.widget.Button;
 
 /**
  * Created by goodautumn on 8/3/2015.
@@ -21,9 +21,6 @@ import android.widget.Toast;
 public class AddActivity extends ActionBarActivity{
     FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    NfcAdapter mNfcAdapter;
-    PendingIntent mNfcPendingIntent;
-    IntentFilter[] mNdefExchangeFilters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -31,9 +28,12 @@ public class AddActivity extends ActionBarActivity{
         setContentView(R.layout.add_main);
 
 
-        QrEncodeButtonFragment qrEncodeButtonFragment = new QrEncodeButtonFragment();
-        fragmentTransaction.add(R.id.bottom_add_fragment_container, qrEncodeButtonFragment);
-        fragmentTransaction.commit();
+Button receiveNFCButton = (Button) findViewById(R.id.add_NFC_button);
+        Button scanQRButton = (Button) findViewById(R.id.add_QR_button);
+
+        receiveNFCButton.setOnClickListener(onAddNFCButtonClick);
+        scanQRButton.setOnClickListener(onAddQRButtonClick);
+
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -46,6 +46,20 @@ public class AddActivity extends ActionBarActivity{
         mNdefExchangeFilters = new IntentFilter[] { nfcIntent };
 
     }
+    private View.OnClickListener onAddNFCButtonClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+//            Intent addIntent = new Intent(getApplicationContext(), AddActivity.class);
+//            startActivity(addIntent);
+        }
+    };
+    private View.OnClickListener onAddQRButtonClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent scanQrIntent = new Intent(getApplicationContext(), QrScanActivity.class);
+            startActivity(scanQrIntent);
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -66,17 +80,7 @@ public class AddActivity extends ActionBarActivity{
     }
 
 
-    public void onClick(View view) {
-        switch(view.getId()){
-
-            case R.id.qr_encode_button:{
-                Intent qrEncodeIntent = new Intent(this, QrEncodeActivity.class);
-                startActivity(qrEncodeIntent);
-                break;
-            }
-        }
-    }
-
+    
     @Override
     protected void onResume() {
         super.onResume();
