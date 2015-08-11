@@ -1,9 +1,9 @@
 package com.codeu.amwyz.ct;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.provider.ContactsContract;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -11,9 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
-
 import android.widget.TextView;
 
 import com.codeu.amwyz.ct.data.ContactContract;
@@ -37,7 +36,7 @@ public class ContactAdapter extends CursorAdapter {
     public static class ViewHolder {
         // Currently only set the image, name, and import button.
         // need to update with dynamic buttons for facebook and linkedIn
-        public final ImageButton iconButton;
+        public final ImageView iconButton;
         public final TextView nameView;
         public final Button facebookButton;
         public final Button linkedinButton;
@@ -45,7 +44,7 @@ public class ContactAdapter extends CursorAdapter {
         public final ListView listView;
 
         public ViewHolder(View view) {
-            iconButton = (ImageButton) view.findViewById(R.id.list_item_icon_button);
+            iconButton = (ImageView) view.findViewById(R.id.list_item_icon_button);
             nameView = (TextView) view.findViewById(R.id.list_item_name_textview);
             facebookButton = (Button) view.findViewById(R.id.list_item_fb_button);
             linkedinButton = (Button) view.findViewById(R.id.list_item_li_button);
@@ -136,7 +135,13 @@ public class ContactAdapter extends CursorAdapter {
         // get a view holder
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        viewHolder.iconButton.setImageResource(R.mipmap.ic_launcher);
+        String parseID = cursor.getString(COLUMN_USER_PARSE_ID).substring(2);
+        Bitmap userBitmap = Utility.getProfilePicture(context, parseID);
+        if(userBitmap==null){
+            viewHolder.iconButton.setImageResource(R.mipmap.ic_launcher);
+        }else{
+            viewHolder.iconButton.setImageBitmap(userBitmap);
+        }
 
         // construct the contact link
         String nameStr = cursor.getString(COLUMN_USER_REAL_NAME);

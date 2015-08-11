@@ -15,14 +15,13 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-        <ImageButton
+        <ImageView
             android:id="@+id/list_item_icon_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:clickable="false"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             android:background="#ededed"
             android:src="@mipmap/ic_launcher" />
     </FrameLayout>
