@@ -1,17 +1,20 @@
 package com.codeu.amwyz.ct;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codeu.amwyz.ct.data.ContactContract;
@@ -19,16 +22,35 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 
 /**
  * Created by Youyou on 7/30/2015.
-<<<<<<< HEAD
  */
 // Implmented with a Loader and cursor adapter
 public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final String LOG_TAG = "ContactFragment";//ContactsFragment.class.getSimpleName();
 
     // Initalize the listView and the cursor adpater
-    private ContactAdapter mContactsAdapter;
-    ListView listView;
+    private ContactAdapter mContactAdapter;
+    private ListView mListView;
+    private int mPosition = ListView.INVALID_POSITION;
+
     // ID for loader
     private static final int CONTACT_LOADER = 0;
+    private static final String[] CONTACT_COLUMNS = {
+            ContactContract.ContactEntry.TABLE_NAME + "." + ContactContract.ContactEntry._ID,
+            ContactContract.ContactEntry.COLUMN_USER_PARSE_ID,
+            ContactContract.ContactEntry.COLUMN_USER_REAL_NAME,
+            ContactContract.ContactEntry.COLUMN_USER_PHONE,
+            ContactContract.ContactEntry.COLUMN_USER_LINKEDIN,
+            ContactContract.ContactEntry.COLUMN_USER_FACEBOOK,
+            ContactContract.ContactEntry.COLUMN_USER_EMAIL
+    };
+
+    static final int COLUMN_CONTACT_ID = 0;
+    static final int COLUMN_USER_PARSE_ID = 1;
+    static final int COLUMN_USER_REAL_NAME = 2;
+    static final int COLUMN_USER_PHONE = 3;
+    static final int COLUMN_USER_LINKEDIN = 4;
+    static final int COLUMN_USER_FACEBOOK = 5;
+    static final int COLUMN_USER_EMAIL = 6;
 
     // place holder
     public ContactsFragment(){
@@ -40,13 +62,27 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState){
         // create a cursor adapter
 
-        mContactsAdapter = new ContactAdapter(getActivity(),null,0);
+        mContactAdapter = new ContactAdapter(getActivity(),null,0);
         // inflate the fragment
         View rootView = inflater.inflate(R.layout.contacts_fragment, container, false);
         // bind the adapter to the list view
-        listView = (ListView) rootView.findViewById(R.id.listview_contacts);
-        listView.setAdapter(mContactsAdapter);
+        mListView = (ListView) rootView.findViewById(R.id.listview_contacts);
+        mListView.setAdapter(mContactAdapter);
+/*
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(LOG_TAG, position + ", " + id);
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                if(cursor != null){
+                    Intent intent = new Intent(getActivity(), DetailContacts.class)
+                            .setData(ContactContract.ContactEntry.buildContactUri(id));
+                    startActivity(intent);
+                }
+            }
+        });
+*/
         return rootView;
     }
 
@@ -60,6 +96,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     // A update function for update contacts
     public void updateContact() {
         CTSyncAdapter.syncImmediately(getActivity());
+        getLoaderManager().restartLoader(CONTACT_LOADER,null,this);
     }
 
     @Override
@@ -71,7 +108,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         // bind the loader to the content provider
         return new CursorLoader(getActivity(),
                 contactUri,
-                null,
+                CONTACT_COLUMNS,
                 null,
                 null,
                 sortOrder);
@@ -79,12 +116,13 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mContactsAdapter.swapCursor(data);
+        mContactAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mContactsAdapter.swapCursor(null);
+        mContactAdapter.swapCursor(null);
     }
+
 
 }

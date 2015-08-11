@@ -19,9 +19,13 @@ import com.codeu.amwyz.ct.R;
 import com.codeu.amwyz.ct.Utility;
 import com.codeu.amwyz.ct.data.ContactContract;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -45,28 +49,47 @@ public class CTSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(LOG_TAG, "Starting sync");
         // get the default preference list
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        // get the contact list
-        Set<String> contactsSet = prefs.getStringSet(getContext().getString(R.string.user_contacts_key), new HashSet<String>());
-        // get the query
+        // get current user's contact list
         ParseQuery<ParseObject> query = ParseQuery.getQuery(getContext().getString(R.string.test_parse_class_key));
-        // only selec friends
-        query = query.whereContainedIn("objectId",contactsSet);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
+        String objectId = prefs.getString(getContext().getString(R.string.user_id_key), "");
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            public void done(ParseObject user_profile, ParseException e) {
                 if (e == null) {
-                    // before inserting, drop the whole table
-                    getContext().getContentResolver().delete(ContactContract.ContactEntry.CONTENT_URI,null,null);
-                    // insert each ParseObject
-                    for(ParseObject object:objects){
-                        // Create content value with the following method in Utility
-                        ContentValues newValue = Utility.createContactValues(object.getString("objectId"),object.getString(getContext().getString(R.string.user_real_name_key)),
-                                object.getString(getContext().getString(R.string.user_phone_key)),object.getString(getContext().getString(R.string.user_email_key)),
-                                object.getString(getContext().getString(R.string.facebook_user_id)),object.getString(getContext().getString(R.string.user_linkedin_key)));
-                        // Insert
-                        getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
+                    // convert the json contact list to String set
+                    JSONArray contactsJSONList = user_profile.getJSONArray(getContext().getString(R.string.user_contacts_key));
+                    Set<String> contactsSet = new HashSet<String>();
+                    if(contactsJSONList != null) {
+                        for (int i = 0; i < contactsJSONList.length(); i++) {
+                            try {
+                                contactsSet.add(contactsJSONList.getString(i));
+                            }catch(JSONException JSONe){
+                                Log.d(LOG_TAG, "Problem getting contact list set: " + JSONe.toString());
+                            }
+                        }
+                        // use the string set to make query for contact list
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery(getContext().getString(R.string.test_parse_class_key));
+                        query = query.whereContainedIn("objectId",contactsSet);
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            public void done(List<ParseObject> objects, ParseException e) {
+                                if (e == null) {
+                                    // before inserting, drop the whole table
+                                    getContext().getContentResolver().delete(ContactContract.ContactEntry.CONTENT_URI,null,null);
+                                    // insert each ParseObject
+                                    for(ParseObject object:objects){
+                                        // Create content value with the following method in Utility
+                                        ContentValues newValue = Utility.createContactValues(object.getObjectId(), object.getString(getContext().getString(R.string.user_real_name_key)),
+                                                object.getString(getContext().getString(R.string.user_phone_key)), object.getString(getContext().getString(R.string.user_email_key)),
+                                                object.getString(getContext().getString(R.string.user_facebook_key_provided)), object.getString(getContext().getString(R.string.user_linkedin_key)));
+                                        // Insert
+                                        Log.d(LOG_TAG,newValue.getAsString(ContactContract.ContactEntry.COLUMN_USER_PARSE_ID));
+                                        getContext().getContentResolver().insert(ContactContract.ContactEntry.CONTENT_URI,newValue);
+                                    }
+                                } else {
+                                    Log.d(LOG_TAG,"Parse fetching fail:" + e.toString());
+                                }
+                            }
+                        });
                     }
-                } else {
-                    Log.d(LOG_TAG,"Parse fetching fail:" + e.toString());
                 }
             }
         });
