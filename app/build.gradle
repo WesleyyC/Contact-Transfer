@@ -20,6 +20,9 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:22.+'
+}
+dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
 }
@@ -27,9 +30,6 @@ dependencies {
 dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
-}
-dependencies {
-    compile 'com.android.support:support-v4:22.+'
 }
 dependencies {
     compile ('eu.livotov.labs:zxscanlib:2.0.1@aar') {transitive=true}
