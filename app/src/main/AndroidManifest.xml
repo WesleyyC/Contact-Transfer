@@ -2,33 +2,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeu.amwyz.ct" >
 
+    <!-- Requirement for Internet Access-->
     <uses-permission
         android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Requirement for NFC-->
     <uses-permission
         android:name="android.permission.NFC" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <!-- Requirement for Data Storage-->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<!-- Permissions required by the sync adapter -->
+
+    <!-- Requirement for native contact -->
+    <uses-permission
+        android:name="android.permission.READ_CONTACTS"/>
+
+    <!-- Requirement for the sync adapter -->
     <uses-permission
         android:name="android.permission.READ_SYNC_SETTINGS"/>
     <uses-permission
         android:name="android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission
         android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission
-        android:name="android.permission.READ_CONTACTS"/>
 
-    <uses-feature
-        android:name="android.hardware.nfc"
-        android:required="true" />
-
+    <!--Requirement for profile picture-->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- Application Manifest-->
     <application
         android:name=".App"
         android:allowBackup="true"
