@@ -9,7 +9,8 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:descendantFocusability="blocksDescendants" >
+    android:descendantFocusability="blocksDescendants"
+    android:id="@+id/list_item_layout">
 
     <FrameLayout
         android:layout_width="wrap_content"

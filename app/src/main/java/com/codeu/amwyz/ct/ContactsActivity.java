@@ -29,7 +29,7 @@ public class ContactsActivity extends ActionBarActivity{
         // go to the Contact Fragment
         // Fragment class is v4
         ContactsFragment contactsFragment =  new ContactsFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.contacts_container,contactsFragment).commit();
+        fragmentTransaction.add(R.id.contacts_container,contactsFragment).commit();
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -67,6 +68,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         // bind the adapter to the list view
         mListView = (ListView) rootView.findViewById(R.id.listview_contacts);
         mListView.setAdapter(mContactAdapter);
+/*
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,7 +82,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
                 }
             }
         });
-
+*/
         return rootView;
     }
 
