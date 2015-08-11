@@ -22,8 +22,8 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:clickable="false"
-            android:src="@mipmap/ic_launcher"
-            android:background="#ffc8d0"/>
+            android:background="#ededed"
+            android:src="@mipmap/ic_launcher" />
     </FrameLayout>
 
     <TextView
@@ -47,22 +47,26 @@
             android:layout_weight="1"
             android:focusable="false"
             android:text="Export"
-            android:onClick="onDetailContactsClick"
-            android:background="#ffc8d0"/>
+            android:textColor="#ffffff"
+            android:background="#31caff"/>
         <Button
             android:id="@+id/list_item_fb_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:focusable="false"
-            android:text="FB"/>
+            android:text="FB"
+            android:textColor="#ffffff"
+            android:background="#3b5998"/>
         <Button
             android:id="@+id/list_item_li_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:focusable="false"
-            android:text="LI"/>
+            android:text="LI"
+            android:textColor="#ffffff"
+            android:background="#0077b5"/>
     </LinearLayout>
 </LinearLayout>
 
