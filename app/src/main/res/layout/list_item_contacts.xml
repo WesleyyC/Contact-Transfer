@@ -13,47 +13,54 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <ImageButton
             android:id="@+id/list_item_icon_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:clickable="false"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher"
+            android:background="#ffc8d0"/>
     </FrameLayout>
 
     <TextView
         android:id="@+id/list_item_name_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
         android:text="Jane Doe"/>
 
     <LinearLayout
         android:id="@+id/list_item_buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
         android:orientation="horizontal">
         <Button
             android:id="@+id/list_item_export_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:focusable="false"
             android:text="Export"
-            android:onClick="onDetailContactsClick"/>
+            android:onClick="onDetailContactsClick"
+            android:background="#ffc8d0"/>
         <Button
             android:id="@+id/list_item_fb_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:focusable="false"
             android:text="FB"/>
         <Button
             android:id="@+id/list_item_li_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:focusable="false"
             android:text="LI"/>
     </LinearLayout>
