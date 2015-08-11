@@ -2,12 +2,14 @@ package com.codeu.amwyz.ct;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +21,11 @@ import android.widget.Button;
  * Created by goodautumn on 8/3/2015.
  */
 public class AddActivity extends ActionBarActivity{
-    FragmentManager fragmentManager = getFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    //FragmentManager fragmentManager = getFragmentManager();
+    String LOG_TAG = AddActivity.class.getSimpleName();
+    NfcAdapter mNfcAdapter;
+    PendingIntent mNfcPendingIntent;
+    IntentFilter[] mNdefExchangeFilters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -51,6 +56,8 @@ Button receiveNFCButton = (Button) findViewById(R.id.add_NFC_button);
         public void onClick(View v) {
 //            Intent addIntent = new Intent(getApplicationContext(), AddActivity.class);
 //            startActivity(addIntent);
+            Toast.makeText(v.getContext(),"Waiting to receive.\n Please Touch Phones!",Toast.LENGTH_LONG).show();
+            Log.d(LOG_TAG, "waiting to receive NdefMessage");
         }
     };
     private View.OnClickListener onAddQRButtonClick = new View.OnClickListener() {
