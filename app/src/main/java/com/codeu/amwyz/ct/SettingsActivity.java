@@ -1,4 +1,3 @@
-
 package com.codeu.amwyz.ct;
 
 import android.content.Intent;
@@ -54,7 +53,7 @@ public class SettingsActivity extends PreferenceActivity
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_real_name_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_phone_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_email_key)));
-//        bindPreferenceSummaryToValue(findPreference(getString(R.string.user_facebook_key_provided)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.user_facebook_key_provided)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.user_linkedin_key)));
     }
 
@@ -127,7 +126,7 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public boolean onPreferenceChange(final Preference preference, Object value) {
         // get the updated value
-       Log.d("Setting", preference.getKey());
+        Log.d("Setting", preference.getKey());
         Log.d("Setting",value.toString());
         if(preference.getKey().equals(getString(R.string.user_facebook_key_provided))) {
             // get objectID
@@ -138,7 +137,7 @@ public class SettingsActivity extends PreferenceActivity
 
             if(value.toString().equals("true") &&  prefs.getString(getString(R.string.facebook_user_id),null) == null){
                 onFblogin();
-               // Log.d("ID", prefs.getString(getString(R.string.facebook_user_id), null));
+                // Log.d("ID", prefs.getString(getString(R.string.facebook_user_id), null));
             }
             else if(value.toString().equals("false")){
                 editor.putString(getString(R.string.facebook_user_id),null).commit();
@@ -220,7 +219,6 @@ public class SettingsActivity extends PreferenceActivity
         else{
             editor.putString("user_facebook",null);
         }
-
         editor.commit();
     }*/
 
@@ -310,7 +308,6 @@ public class SettingsActivity extends PreferenceActivity
 
         callbackmanager.onActivityResult(requestCode, resultCode, data);
     }
-
 
 
 }

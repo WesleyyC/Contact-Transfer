@@ -8,7 +8,6 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,10 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.nio.charset.Charset;
-import java.util.logging.Handler;
 
 /**
  * Created by goodautumn on 8/3/2015.
@@ -97,7 +94,7 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
         //Send the contact info
         String userInfoString = "";
         //add user parse id
-        userInfoString += prefs.getString("user_id",null) + ",";
+        userInfoString += prefs.getString("user_id",null);/* + ",";
         //add user real name
         userInfoString += prefs.getString("user_real_name", null) + ",";
         //add user phone
@@ -107,7 +104,7 @@ public class ShareActivity extends ActionBarActivity implements NfcAdapter.Creat
         //add user Facebook
         userInfoString += prefs.getString("user_facebook", null) + ",";
         //add user LinkedIn
-        userInfoString += prefs.getString("user_linkedin", null);
+        userInfoString += prefs.getString("user_linkedin", null);*/
 
         //Create an Ndef record with a text mime type that contains the user parseId
         //as well as an AARecord to force our CT app to open on the receiving phone
