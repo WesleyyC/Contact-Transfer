@@ -149,7 +149,7 @@ public class ContactAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         String parseID = cursor.getString(COLUMN_USER_PARSE_ID).substring(2);
-        Bitmap userBitmap = Utility.getProfilePicture(context, parseID);
+        Bitmap userBitmap = Utility.getProfilePicture(context, parseID, true);
         if(userBitmap==null){
             viewHolder.iconButton.setImageResource(R.mipmap.ic_launcher);
         }else{

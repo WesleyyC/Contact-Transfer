@@ -36,7 +36,7 @@ public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
     // contacts_list_setup
-    public static final String[] TEST_CONTACT_ARRAY={"Xhgsv7u7pW","kexbIzRtjc","sma0eYdYTL","E8OetEbIbi","haWykmSo9s","bbkRU8DkS1","ITgwO61jmE"};
+    public static final String[] TEST_CONTACT_ARRAY={"hNGXu29zFV","Nb9NoEnTX7","haWykmSo9s","sma0eYdYTL","kexbIzRtjc","Xhgsv7u7pW"};
     public static final List<String> TEST_CONTACT_LIST= Arrays.asList(TEST_CONTACT_ARRAY);
     public static final Set<String> TEST_CONTACT_SET = new HashSet<>(TEST_CONTACT_LIST);
 
@@ -113,7 +113,7 @@ public class Utility {
         });
     }
 
-    public static Bitmap getProfilePicture(Context context, String parseID) {
+    public static Bitmap getProfilePicture(Context context, String parseID, Boolean listView) {
 
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(context.getString(R.string.test_parse_class_key));
@@ -123,7 +123,15 @@ public class Utility {
             if(newI != null){
                 try {
                     byte[] dataN = newI.getData();
-                    Bitmap newImage = BitmapFactory.decodeByteArray(dataN, 0, dataN.length);
+                    Bitmap newImage;
+                    if(listView) {
+                        BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
+                        options.inPurgeable = true; // inPurgeable is used to free up memory while required
+                        Bitmap tmpImage = BitmapFactory.decodeByteArray(dataN, 0, dataN.length, options);//Decode image, "thumbnail" is the object of image file
+                        newImage = Bitmap.createScaledBitmap(tmpImage, 50, 50, true);// convert decoded bitmap into well scalled Bitmap format.
+                    }else {
+                        newImage = BitmapFactory.decodeByteArray(dataN, 0, dataN.length);
+                    }
 
                     return newImage;
                 } catch (ParseException e) {

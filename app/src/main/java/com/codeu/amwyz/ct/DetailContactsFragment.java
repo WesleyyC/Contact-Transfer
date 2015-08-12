@@ -160,7 +160,7 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
 
             //set the app icon
             String imageID = mParseIdView.getText().toString();
-            Bitmap user_pic = Utility.getProfilePicture(getActivity(),imageID);
+            Bitmap user_pic = Utility.getProfilePicture(getActivity(),imageID,false);
             if(user_pic==null){
                 mIconView.setImageResource(R.mipmap.ic_launcher);
             }else {
