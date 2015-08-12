@@ -17,6 +17,9 @@ import android.content.IntentFilter;
 import android.widget.Toast;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Created by goodautumn on 8/3/2015.
  */
@@ -110,25 +113,30 @@ Button receiveNFCButton = (Button) findViewById(R.id.add_NFC_button);
 //            setNoteBody(new String(payload));
                 //add the contact by getting the parseId from the Ndef message
                 Log.e(LOG_TAG, "payload is: " + new String(payload));
-                Utility.QRAdd(this, new String(payload));
-                //setIntent(new Intent()); // Consume this intent.
+                ArrayList<String> info = parsePayload(new String(payload));
+                if (info.size()< 6) {
+                    while (info.size() != 6 ) {
+                        info.add("");
+                    }
+                }
+                for (int i = 0; i < info.size(); i++) {
+                    if (info.get(i).equals("null")) {
+                        info.set(i,"");
+                    }
+                }
+                Utility.NFCAdd(this, info.get(0), info.get(1), info.get(2),info.get(3),info.get(4),info.get(5));
             }
         }
 //        enableNdefExchangeMode();
     }
 
-    //if the onResume method ends up not actually adding the contact,
-    //might need to add the contact from here...?
+    private ArrayList<String> parsePayload(String payload) {
+        String[] fields = payload.split("'");
+        ArrayList<String> contactFields = new ArrayList<>(Arrays.asList(fields));
+        return contactFields;
+    }
     @Override
     protected void onNewIntent(Intent intent) {
-        // NDEF exchange mode
-//        Log.e(LOG_TAG,"on new intent called");
-//        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-//            NdefMessage[] msgs = getNdefMessages(intent);
-//            //promptForContent(msgs[0]);
-//            Log.e(LOG_TAG,"ndef discovered in onNewIntent");
-//            Utility.addContacts(this,msgs[0].getRecords()[0].getPayload().toString());
-//        }
         setIntent(intent);
     }
 
