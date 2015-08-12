@@ -1,6 +1,8 @@
-# ContactTransfer <a href="http://imgur.com/GloEK19"><img src="http://i.imgur.com/GloEK19.png?1" title="source: imgur.com" height="100" width="100"/></a>
+# ContactTransfer <a href="http://imgur.com/GloEK19">
 
-As part of the Google CodeU program, we create Contact Transfer.
+As part of the Google CodeU program, we create Contact Transfer. 
+
+<img src="http://i.imgur.com/GloEK19.png?1" title="source: imgur.com" height="100" width="100"/></a>
 
 ContactTransfer is an easy way to  transfer contact information between to phones with a touch. 
 
