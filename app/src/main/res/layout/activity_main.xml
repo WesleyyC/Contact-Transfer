@@ -16,28 +16,34 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_width="0dp"
+            android:layout_margin="15dp"
             android:text="Add"
-            android:id="@+id/main_add_button">
+            android:id="@+id/main_add_button"
+            android:textColor="#ffffff"
+            android:background="#0077b5">
         </Button>
 
         <Button
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_width="0dp"
+            android:layout_margin="15dp"
             android:text="Share"
-            android:id="@+id/main_share_button">
+            android:id="@+id/main_share_button"
+            android:textColor="#ffffff"
+            android:background="#3b5998">
         </Button>
 
 
     </LinearLayout>
-
     <Button
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:text="Contacts"
-        android:id="@+id/main_contact_button">
+        android:layout_margin="15dp"
+        android:id="@+id/main_contact_button"
+        android:textColor="#ffffff"
+        android:background="#31caff">
     </Button>
-
-
 </LinearLayout>

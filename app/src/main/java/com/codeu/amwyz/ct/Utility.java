@@ -95,7 +95,7 @@ public class Utility {
 
     public static void updateProfilePicture(Context context, Bitmap img){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        img.compress(Bitmap.CompressFormat.JPEG,100, stream);
         byte[] scaledData = stream.toByteArray();
         final ParseFile photoFile = new ParseFile("profile_photo.jpg", scaledData);
 

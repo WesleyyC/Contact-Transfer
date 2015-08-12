@@ -11,7 +11,10 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:text="SEND NFC"
-        android:id="@+id/share_NFC_button">
+        android:layout_margin="15dp"
+        android:id="@+id/share_NFC_button"
+        android:textColor="#ffffff"
+        android:background="#3b5998">
     </Button>
 
     <Button
@@ -19,7 +22,10 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:text="GENERATE QR"
-        android:id="@+id/share_QR_button">
+        android:layout_margin="15dp"
+        android:id="@+id/share_QR_button"
+        android:textColor="#ffffff"
+        android:background="#31caff">
     </Button>
 
 </LinearLayout>

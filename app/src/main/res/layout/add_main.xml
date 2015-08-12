@@ -10,16 +10,22 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_width="match_parent"
+        android:layout_margin="15dp"
         android:text="RECEIVE NFC"
-        android:id="@+id/add_NFC_button">
+        android:id="@+id/add_NFC_button"
+        android:textColor="#ffffff"
+        android:background="#0077b5">
     </Button>
 
     <Button
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_width="match_parent"
+        android:layout_margin="15dp"
         android:text="SCAN QR"
-        android:id="@+id/add_QR_button">
+        android:id="@+id/add_QR_button"
+        android:textColor="#ffffff"
+        android:background="#31caff">
     </Button>
 
 </LinearLayout>

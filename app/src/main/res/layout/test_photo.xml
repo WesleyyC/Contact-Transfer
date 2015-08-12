@@ -9,14 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="#c2f1ff">
+        android:background="@color/actionbar_background">
 
         <Button
             android:id="@+id/btnSelectPhoto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Update Profile Picture"
-            android:background="#c2f1ff"/>
+            android:textColor="@color/actionbar_text"
+            android:background="@color/actionbar_background"/>
 
     </LinearLayout>
 
@@ -30,8 +31,7 @@
             android:id="@+id/viewImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            />
+            android:src="@mipmap/ic_launcher" />
 
     </LinearLayout>
 
