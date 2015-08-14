@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.codeu.amwyz.ct.data.ContactContract;
 public class ContactAdapter extends CursorAdapter {
     private final String LOG_TAG = "ContactAdaper";
     private Context mContext;
+    private Callback listener;
 
     //private View viewLayout;
     // these indices for cursor indexes
@@ -53,9 +55,16 @@ public class ContactAdapter extends CursorAdapter {
         }
     }
 
+    public interface Callback{
+        //DetailContactsCallback when an item has been selected
+        public void onItemSelected(Uri uri);
+    }
+
+
     public ContactAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         this.mContext = context;
+        this.listener = (Callback) context;
     }
 
     @Override
@@ -75,18 +84,6 @@ public class ContactAdapter extends CursorAdapter {
         return view;
     }
 
-    private View.OnClickListener onFacebookClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            ListView listView = (ListView) v.getParent().getParent().getParent();
-            final int position = listView.getPositionForView((View)v.getParent());
-            Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-            Log.d(LOG_TAG, "Facebook clicked, row" + position);
-            String facebookId = cursor.getString(COLUMN_USER_FACEBOOK);
-            Utility.facebookIntent(mContext,facebookId);
-        }
-    };
-
     private View.OnClickListener onIconClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -96,10 +93,8 @@ public class ContactAdapter extends CursorAdapter {
 
             Cursor cursor = (Cursor) listView.getItemAtPosition(position);
             if(cursor != null ){
-                Intent intent = new Intent(mContext, DetailContacts.class)
-                        .setData(ContactContract.ContactEntry.buildContactUri(
+                listener.onItemSelected(ContactContract.ContactEntry.buildContactUri(
                                 cursor.getLong(cursor.getColumnIndex("_id")))); //cursor id
-                mContext.startActivity(intent);
             }
         }
     };
@@ -113,10 +108,8 @@ public class ContactAdapter extends CursorAdapter {
 
             Cursor cursor = (Cursor) listView.getItemAtPosition(position);
             if(cursor != null){
-                Intent intent = new Intent(mContext, DetailContacts.class)
-                        .setData(ContactContract.ContactEntry.buildContactUri(
+                listener.onItemSelected(ContactContract.ContactEntry.buildContactUri(
                                 cursor.getLong(cursor.getColumnIndex("_id")))); //cursor id
-                mContext.startActivity(intent);
             }
         }
     };
@@ -142,6 +135,19 @@ public class ContactAdapter extends CursorAdapter {
             mContext.startActivity(contactIntent);
         }
     };
+
+    private View.OnClickListener onFacebookClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            ListView listView = (ListView) v.getParent().getParent().getParent();
+            final int position = listView.getPositionForView((View)v.getParent());
+            Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+            Log.d(LOG_TAG, "Facebook clicked, row" + position);
+            String facebookId = cursor.getString(COLUMN_USER_FACEBOOK);
+            Utility.facebookIntent(mContext, facebookId);
+        }
+    };
+
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {

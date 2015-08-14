@@ -1,6 +1,7 @@
 package com.codeu.amwyz.ct;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,7 +14,7 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 /**
  * Created by Youyou on 7/30/2015.
  */
-public class ContactsActivity extends ActionBarActivity{
+public class ContactsActivity extends ActionBarActivity implements ContactAdapter.Callback{
 
     private static final String LOG_TAG = ContactsActivity.class.getSimpleName();
     private static final String DETAIL_CONTACTS_FRAGMENT_TAG = "DCFTAG";
@@ -76,4 +77,23 @@ public class ContactsActivity extends ActionBarActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemSelected(Uri contentUri){
+        if(mTwoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailContactsFragment.DETAIL_URI, contentUri);
+
+            DetailContactsFragment fragment = new DetailContactsFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contacts_detail_container, fragment, DETAIL_CONTACTS_FRAGMENT_TAG)
+                    .commit();
+        }
+        else{
+            Intent intent =  new Intent(this, DetailContacts.class)
+                    .setData(contentUri);
+            startActivity(intent);
+        }
+    }
 }
