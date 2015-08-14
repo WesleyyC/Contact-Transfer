@@ -16,7 +16,9 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 public class ContactsActivity extends ActionBarActivity{
 
     private static final String LOG_TAG = ContactsActivity.class.getSimpleName();
+    private static final String DETAIL_CONTACTS_FRAGMENT_TAG = "DCFTAG";
 
+    private boolean mTwoPane;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -26,10 +28,20 @@ public class ContactsActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_main);
 
-        // go to the Contact Fragment
-        // Fragment class is v4
-        ContactsFragment contactsFragment =  new ContactsFragment();
-        fragmentTransaction.add(R.id.contacts_container,contactsFragment).commit();
+        if (findViewById(R.id.contacts_detail_container) != null) {
+            //the detail container view should only be present on the large screen layout.
+            mTwoPane = true;
+
+            if(savedInstanceState == null){
+                ContactsFragment contactsFragment =  new ContactsFragment();
+                fragmentTransaction.add(R.id.contacts_container,contactsFragment, DETAIL_CONTACTS_FRAGMENT_TAG)
+                        .commit();
+            }
+        }
+        else{
+            mTwoPane = false;
+        }
+
     }
 
     @Override
