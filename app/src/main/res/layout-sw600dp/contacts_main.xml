@@ -14,11 +14,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        tools:layout="@android:layout/list_content"/>
+        tools:layout="@android:layout/list_content"
+        class="com.codeu.amwyz.ct.ContactsFragment"/>
     <fragment
         android:id="@+id/contacts_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4" />
+        android:layout_weight="4"
+        class="com.codeu.amwyz.ct.DetailContactsFragment"/>
 
 </LinearLayout>
