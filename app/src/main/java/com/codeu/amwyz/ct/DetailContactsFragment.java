@@ -3,6 +3,7 @@ package com.codeu.amwyz.ct;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,8 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
 
     private static final String LOG_TAG = DetailContactsFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
+
+    private Uri mUri;
 
     // ID for loader
     private static final int DETAIL_LOADER = 0;
@@ -59,6 +62,10 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
 
+        Bundle arguments = getArguments();
+        if(arguments != null){
+            mUri = arguments.getParcelable(DetailContactsFragment.DETAIL_URI);
+        }
         //mContactAdapter = new ContactAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
 
@@ -114,7 +121,7 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Intent intent = getActivity().getIntent();
+        /*Intent intent = getActivity().getIntent();
         if(intent == null){
             return null;
         }
@@ -125,7 +132,20 @@ public class DetailContactsFragment extends Fragment implements LoaderManager.Lo
                 null,
                 null,
                 null
-        );
+        );*/
+
+        //Trying with the mUri created in the onCreateView
+        if(null != mUri){
+            return new CursorLoader(
+                    getActivity(),
+                    mUri,
+                    DETAIL_COLUMNS,
+                    null,
+                    null,
+                    null
+            );
+        }
+        return null;
     }
 
     @Override

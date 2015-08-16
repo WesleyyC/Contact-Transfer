@@ -1,6 +1,7 @@
 package com.codeu.amwyz.ct;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,10 +14,12 @@ import com.codeu.amwyz.ct.sync.CTSyncAdapter;
 /**
  * Created by Youyou on 7/30/2015.
  */
-public class ContactsActivity extends ActionBarActivity{
+public class ContactsActivity extends ActionBarActivity implements ContactAdapter.Callback{
 
     private static final String LOG_TAG = ContactsActivity.class.getSimpleName();
+    private static final String DETAIL_CONTACTS_FRAGMENT_TAG = "DCFTAG";
 
+    private boolean mTwoPane;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -26,10 +29,20 @@ public class ContactsActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_main);
 
-        // go to the Contact Fragment
-        // Fragment class is v4
-        ContactsFragment contactsFragment =  new ContactsFragment();
-        fragmentTransaction.add(R.id.contacts_container,contactsFragment).commit();
+        if (findViewById(R.id.contacts_detail_container) != null) {
+            //the detail container view should only be present on the large screen layout.
+            mTwoPane = true;
+
+            if(savedInstanceState == null){
+                ContactsFragment contactsFragment =  new ContactsFragment();
+                fragmentTransaction.add(R.id.contacts_container,contactsFragment, DETAIL_CONTACTS_FRAGMENT_TAG)
+                        .commit();
+            }
+        }
+        else{
+            mTwoPane = false;
+        }
+
     }
 
     @Override
@@ -64,4 +77,23 @@ public class ContactsActivity extends ActionBarActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemSelected(Uri contentUri){
+        if(mTwoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailContactsFragment.DETAIL_URI, contentUri);
+
+            DetailContactsFragment fragment = new DetailContactsFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contacts_detail_container, fragment, DETAIL_CONTACTS_FRAGMENT_TAG)
+                    .commit();
+        }
+        else{
+            Intent intent =  new Intent(this, DetailContacts.class)
+                    .setData(contentUri);
+            startActivity(intent);
+        }
+    }
 }
